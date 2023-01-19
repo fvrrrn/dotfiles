@@ -1,0 +1,5 @@
+[user]
+	email = boris.chernystrand@gmail.com
+	name = fvrrrn
+[core]
+	editor = nvim
