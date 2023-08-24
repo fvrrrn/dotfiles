@@ -11,5 +11,6 @@ end
 mason.setup()
 
 lspconfig.setup({
-	ensure_installed = { "tsserver", "sumneko_lua" },
+	ensure_installed = { "tsserver", "lua_ls" },
+  automatic_installation = true
 })
