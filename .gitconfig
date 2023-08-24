@@ -3,4 +3,9 @@
 [includeIf "gitdir:~/work/"]
   path = ~/.gitconfig-work
 [init]
-	defaultBranch = master
+  defaultBranch = master
+[user]
+	email = boris.chernystrand@gmail.com
+	name = fvrrrn
+[core]
+	editor = nvim
