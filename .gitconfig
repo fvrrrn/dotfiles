@@ -1,13 +1,11 @@
-[includeIf "gitdir:~/personal/"]
-  path = ~/.gitconfig-personal
-[includeIf "gitdir:~/work/"]
-  path = ~/.gitconfig-work
-[init]
-  defaultBranch = master
 [user]
 	email = boris.chernystrand@gmail.com
 	name = fvrrrn
+[init]
+  defaultBranch = master
 [core]
 	editor = nvim
 [push]
-	autoSetupRemote = true
+  autoSetupRemote = true
+[includeIf "gitdir:~/work/"]
+  path = ~/.gitconfig-work
