@@ -22,5 +22,3 @@ keymap.set("n", "<S-j>", ":BufferLineCyclePrev<cr>", options)
 
 keymap.set("n", "<leader>w", ":Bdelete %<cr>", options)
 -- VISUAL
-keymap.set("v", "<S-k>", ":m '<-2<cr>gv=gv")
-keymap.set("v", "<S-j>", ":m '<+1<cr>gv=gv")
