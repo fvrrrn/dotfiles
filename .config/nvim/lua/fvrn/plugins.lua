@@ -48,15 +48,12 @@ return packer.startup(function(use)
 	use("godlygeek/tabular") -- align text
 
 	-- UI
-	use({
-		"nvim-lualine/lualine.nvim",
-		requires = { "kyazdani42/nvim-web-devicons", opt = true },
-	})
-	use("onsails/lspkind-nvim") -- vscode-like pictograms
+	use(
+		"nvim-lualine/lualine.nvim"
+	)
 	use("lunarvim/darkplus.nvim") -- vscode-like theme
 	use("akinsho/bufferline.nvim") -- buffers, tabs UI
 	use("moll/vim-bbye") -- better and intuitive buffer-closing behavior
-	use("kyazdani42/nvim-web-devicons") -- File icons
 
 	-- LSP
 	use("neovim/nvim-lspconfig") -- LSP plugin
@@ -93,7 +90,6 @@ return packer.startup(function(use)
 			require("hop").setup({ keys = "etovxqpdygfblzhckisuran" })
 		end,
 	}) -- move to word with one key stroke
-	use("olambo/vi-viz") -- expand region
 
 	-- Telescope
 	use("nvim-telescope/telescope.nvim")
@@ -105,12 +101,6 @@ return packer.startup(function(use)
 	})
 	use("JoosepAlviste/nvim-ts-context-commentstring") -- context-aware comment
 
-	use({
-		"nvim-tree/nvim-tree.lua",
-		requires = {
-			"nvim-tree/nvim-web-devicons",
-		},
-	})
 	-- Git
 	use("lewis6991/gitsigns.nvim")
 

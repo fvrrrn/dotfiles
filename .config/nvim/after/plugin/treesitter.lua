@@ -12,7 +12,6 @@ configs.setup({
 		"scss",
 		"html",
 		"lua",
-		"sql",
 		"json",
 		"toml",
 		"yaml",
@@ -25,9 +24,6 @@ configs.setup({
 		enable = true, -- false will disable the whole extension
 		disable = { "" }, -- list of language that will be disabled
 		additional_vim_regex_highlighting = true,
-	},
-	autopairs = {
-		enable = true,
 	},
 	indent = { enable = true, disable = { "yaml" } },
 	context_commentstring = {

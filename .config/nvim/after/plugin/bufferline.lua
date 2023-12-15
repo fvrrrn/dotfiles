@@ -14,12 +14,8 @@ bufferline.setup({
 		-- and so changing this is NOT recommended, this is intended
 		-- as an escape hatch for people who cannot bear it for whatever reason
 		indicator_icon = nil,
-		indicator = { style = "icon", icon = "▎" },
-		buffer_close_icon = "",
-		modified_icon = "●",
-		close_icon = "",
-		left_trunc_marker = "",
-		right_trunc_marker = "",
+		indicator = { style = "none" },
+		modified_icon = "M",
 		--- name_formatter can be used to change the buffer's label in the bufferline.
 		--- Please note some names can/will break the
 		--- bufferline so use this at your discretion knowing that it has
@@ -55,7 +51,7 @@ bufferline.setup({
 		--   end
 		-- end,
 		offsets = { { filetype = "NvimTree", text = "", padding = 1 } },
-		show_buffer_icons = true,
+		show_buffer_icons = false,
 		show_buffer_close_icons = false,
 		show_close_icon = false,
 		show_tab_indicators = true,

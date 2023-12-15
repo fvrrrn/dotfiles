@@ -8,6 +8,7 @@ vim.cmd([[colorscheme darkplus]]) -- apply theme
 -- disable netrw (default file browser) as there are telescope and nvim-tree
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
+vim.g.skip_ts_context_commentstring_module = true -- skip backwards compatibility routines and speed up loading
 
 local options = {
 	termguicolors = true, -- allow more than 8-bit terminal colors
