@@ -15,10 +15,6 @@ vim.keymap.set("n", "<silent>D", '"_D')
 vim.keymap.set("v", "<silent>d", '"_d')
 vim.keymap.set("v", "<silent>D", '"_D')
 
-vim.keymap.set("", "f", function()
-  require("hop").hint_words()
-end, { remap = true })
-
 -- window management
 vim.keymap.set("n", "<leader>wv", "<C-w>v") -- split window vertically
 vim.keymap.set("n", "<leader>wh", "<C-w>s") -- split window horizontally
@@ -30,3 +26,7 @@ vim.keymap.set("n", "<C-j>", "<C-w>j")
 vim.keymap.set("n", "<C-h>", "<C-w>h")
 vim.keymap.set("n", "<C-k>", "<C-w>k")
 vim.keymap.set("n", "<C-l>", "<C-w>l")
+
+-- move line
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+vim.keymap.set("v", "K", ":m '>-2<CR>gv=gv")
