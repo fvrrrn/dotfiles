@@ -13,5 +13,10 @@ vim.opt.rtp:prepend(lazypath)
 
 require("config.keymaps")
 require("config.options")
-require("lazy").setup("plugins")
+require("lazy").setup({
+  import = "plugins",
+  change_detection = {
+    notify = false,
+  },
+})
 --[[ "lewis6991/gitsigns.nvim" ]]

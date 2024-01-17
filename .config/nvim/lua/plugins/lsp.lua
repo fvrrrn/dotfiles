@@ -1,60 +1,95 @@
 return {
   {
-    "williamboman/mason.nvim",
+    "neovim/nvim-lspconfig",
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       "williamboman/mason-lspconfig.nvim",
+      "williamboman/mason.nvim",
+      "hrsh7th/cmp-nvim-lsp",
       "WhoIsSethDaniel/mason-tool-installer.nvim",
+      "nvimtools/none-ls.nvim", -- configure formatters & linters
     },
     config = function()
       require("mason").setup()
 
-      local mason_lspconfig = require("mason-lspconfig")
-
-      local mason_tool_installer = require("mason-tool-installer")
-
-      mason_lspconfig.setup({
-        -- list of servers for mason to install
+      require("mason-lspconfig").setup({
         ensure_installed = {
+          -- language servers
           "tsserver",
           "html",
           "cssls",
           "lua_ls",
           "pyright",
         },
-        -- auto-install configured servers (with lspconfig)
         automatic_installation = true, -- not the same as ensure_installed
       })
 
-      mason_tool_installer.setup({
+      require("mason-tool-installer").setup({
         ensure_installed = {
-          "prettier", -- prettier formatter
-          "stylua", -- lua formatter
-          "eslint_d", -- js linter
-          "isort", -- python formatter
-          "black", -- python formatter
-          "pylint", -- python linter
+          -- linters
+          "pylint",
+          "eslint_d",
+          -- formatters
+          "prettier",
+          "stylua",
+          "isort",
+          "black",
         },
+        automatic_installation = true,
       })
-    end,
-  },
-  {
-    "neovim/nvim-lspconfig",
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
-      -- { "antosha417/nvim-lsp-file-operations", config = true },
-    },
-    config = function()
-      -- import lspconfig plugin
-      local lspconfig = require("lspconfig")
 
-      -- import cmp-nvim-lsp plugin
-      local cmp_nvim_lsp = require("cmp_nvim_lsp")
+      local null_ls = require("null-ls")
+      -- for conciseness
+      local formatting = null_ls.builtins.formatting -- to setup formatters
+      local diagnostics = null_ls.builtins.diagnostics -- to setup linters
+
+      -- to setup format on save
+      local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+
+      -- configure null_ls
+      null_ls.setup({
+        -- add package.json as identifier for root (for typescript monorepos)
+        -- root_dir = null_ls_utils.root_pattern(".null-ls-root", "Makefile", ".git", "package.json"),
+        -- setup formatters & linters
+        sources = {
+          --  to disable file types use
+          --  "formatting.prettier.with({disabled_filetypes: {}})" (see null-ls docs)
+          formatting.prettier.with({
+            extra_filetypes = { "svelte" },
+          }), -- js/ts formatter
+          formatting.stylua, -- lua formatter
+          formatting.isort, -- python formatter
+          formatting.black, -- python formatter
+          diagnostics.pylint, -- python linter
+          diagnostics.eslint_d, -- js/ts? linter
+        },
+        -- configure format on save
+        on_attach = function(current_client, bufnr)
+          if current_client.supports_method("textDocument/formatting") then
+            vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+            vim.api.nvim_create_autocmd("BufWritePre", {
+              group = augroup,
+              buffer = bufnr,
+              callback = function()
+                vim.lsp.buf.format({
+                  filter = function(client)
+                    --  only use null-ls for formatting instead of lsp server
+                    return client.name == "null-ls"
+                  end,
+                  bufnr = bufnr,
+                })
+              end,
+            })
+          end
+        end,
+      })
+
+      local lspconfig = require("lspconfig")
 
       local keymap = vim.keymap -- for conciseness
 
       local opts = { noremap = true, silent = true }
-      local on_attach = function(client, bufnr)
+      local on_attach = function(_, bufnr)
         opts.buffer = bufnr
 
         -- set keybinds
@@ -99,14 +134,7 @@ return {
       end
 
       -- used to enable autocompletion (assign to every lsp server config)
-      local capabilities = cmp_nvim_lsp.default_capabilities()
-
-      -- Change the Diagnostic symbols in the sign column (gutter)
-      local signs = { Error = "E", Warn = "W", Hint = "H", Info = "I" }
-      for type, icon in pairs(signs) do
-        local hl = "DiagnosticSign" .. type
-        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-      end
+      local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
       -- configure html server
       lspconfig["html"].setup({
