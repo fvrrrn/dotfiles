@@ -20,6 +20,7 @@ return {
           "cssls",
           "lua_ls",
           "pyright",
+          "hls",
         },
         automatic_installation = true, -- not the same as ensure_installed
       })
@@ -27,13 +28,14 @@ return {
       require("mason-tool-installer").setup({
         ensure_installed = {
           -- linters
-          "pylint",
-          "eslint_d",
+          "pylint", -- python
+          "eslint_d", -- js
           -- formatters
-          "prettier",
-          "stylua",
-          "isort",
-          "black",
+          "prettier", -- js
+          "stylua", -- lua
+          "isort", -- python
+          "black", -- python
+          "fourmolu", -- haskell
         },
         automatic_installation = true,
       })
@@ -60,6 +62,7 @@ return {
           formatting.stylua, -- lua formatter
           formatting.isort, -- python formatter
           formatting.black, -- python formatter
+          formatting.fourmolu, -- haskell formatter
           diagnostics.pylint, -- python linter
           diagnostics.eslint_d, -- js/ts? linter
         },
@@ -156,6 +159,12 @@ return {
 
       -- configure python server
       lspconfig["pyright"].setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
+      })
+
+      -- configure haskell server
+      lspconfig["hls"].setup({
         capabilities = capabilities,
         on_attach = on_attach,
       })
