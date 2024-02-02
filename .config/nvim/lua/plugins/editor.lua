@@ -58,6 +58,8 @@ return {
           "typescript",
           "tsx",
 
+          "haskell",
+
           -- config
           "json",
           "yaml",
@@ -120,5 +122,14 @@ return {
     opts = function()
       vim.keymap.set("", "f", "<cmd>HopWord<CR>", { desc = "Start search for word start anywhere" })
     end,
+  },
+  {
+    "folke/which-key.nvim",
+    event = "VeryLazy",
+    init = function()
+      vim.o.timeout = true
+      vim.o.timeoutlen = 300
+    end,
+    opts = {},
   },
 }
