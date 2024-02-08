@@ -1,4 +1,5 @@
 ! vscode dark .Xresources
+Xft.dpi: 96
 
 *.foreground: #d4d4d4
 *.background: #1e1e1e
@@ -30,4 +31,12 @@ XTerm*selectToClipboard: true
 
 XTerm*vt100.translations: #override \
     Shift Ctrl <Key> C: copy-selection(CLIPBOARD) \n\
-    Shift Ctrl <Key> V: insert-selection(CLIPBOARD)
+    Shift Ctrl <Key> V: insert-selection(CLIPBOARD) \n\
+    Ctrl <Key> minus: smaller-vt-font() \n\
+    Ctrl <Key> plus: larger-vt-font() \n\
+    Ctrl <Key> 0: set-vt-font(3)
+
+! XTerm*vt100.translations: #override \n\
+! ! UXTerm*VT100.translations: #override \n\
+! !     ~Shift Ctrl <Key> minus: smaller-vt-font() \n\
+! !     ~Shift Ctrl <Key> plus: larger-vt-font()
