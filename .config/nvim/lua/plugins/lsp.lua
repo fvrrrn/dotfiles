@@ -21,6 +21,7 @@ return {
           "lua_ls",
           "pyright",
           "hls",
+          "tailwindcss",
         },
         automatic_installation = true, -- not the same as ensure_installed
       })
@@ -153,6 +154,12 @@ return {
 
       -- configure css server
       lspconfig["cssls"].setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
+      })
+
+      -- configure tailwind server
+      lspconfig["tailwindcss"].setup({
         capabilities = capabilities,
         on_attach = on_attach,
       })
