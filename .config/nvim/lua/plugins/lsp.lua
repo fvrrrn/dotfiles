@@ -22,6 +22,7 @@ return {
           "pyright",
           "hls",
           "tailwindcss",
+          "clangd",
         },
         automatic_installation = true, -- not the same as ensure_installed
       })
@@ -64,6 +65,7 @@ return {
           formatting.isort, -- python formatter
           formatting.black, -- python formatter
           formatting.fourmolu, -- haskell formatter
+          formatting.clang_format, -- c formatter
           diagnostics.pylint, -- python linter
           diagnostics.eslint_d, -- js/ts? linter
         },
@@ -195,6 +197,12 @@ return {
             },
           },
         },
+      })
+
+      -- configure c server
+      lspconfig["clangd"].setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
       })
     end,
   },
