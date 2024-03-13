@@ -1,9 +1,11 @@
 return {
   {
-    "Mofiqul/vscode.nvim",
-    priority = 1000,
+    "mcchrish/zenbones.nvim",
+    dependencies = {
+      "rktjmp/lush.nvim",
+    },
     config = function()
-      require("vscode").load("dark")
+      vim.api.nvim_command("colorscheme zenbones")
     end,
   },
 }

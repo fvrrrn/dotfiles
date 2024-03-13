@@ -9,6 +9,8 @@ vim.cmd("set keymap=russian-jcukenwin")
 vim.cmd("set iminsert=0")
 vim.cmd("set imsearch=0")
 
+-- vim.g.zenbones_compat = 1
+
 vim.opt.sidescrolloff = 10 -- minimal number of screen columns either side of cursor if wrap is `false`
 vim.opt.scrolloff = 10 -- minimal number of screen columns either side of cursor if wrap is `false`
 vim.opt.shell = "fish" -- sets default terminal/shell to FISH
