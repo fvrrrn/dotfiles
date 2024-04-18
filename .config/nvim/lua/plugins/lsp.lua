@@ -8,6 +8,7 @@ return {
       "hrsh7th/cmp-nvim-lsp",
       "WhoIsSethDaniel/mason-tool-installer.nvim",
       "nvimtools/none-ls.nvim", -- configure formatters & linters
+      "nvimtools/none-ls-extras.nvim", -- eslint_d
     },
     config = function()
       require("mason").setup()
@@ -31,13 +32,9 @@ return {
         ensure_installed = {
           -- linters
           "pylint", -- python
-          "eslint_d", -- js
-          -- formatters
-          "prettier", -- js
           "stylua", -- lua
           "isort", -- python
           "black", -- python
-          "fourmolu", -- haskell
         },
         automatic_installation = true,
       })
@@ -56,18 +53,19 @@ return {
         -- root_dir = null_ls_utils.root_pattern(".null-ls-root", "Makefile", ".git", "package.json"),
         -- setup formatters & linters
         sources = {
+
+          require("none-ls.diagnostics.eslint"),
+          require("none-ls.code_actions.eslint"),
           --  to disable file types use
           --  "formatting.prettier.with({disabled_filetypes: {}})" (see null-ls docs)
           formatting.prettier.with({
-            extra_filetypes = { "svelte" },
+            extra_filetypes = { "svelte", "svg" },
           }), -- js/ts formatter
           formatting.stylua, -- lua formatter
           formatting.isort, -- python formatter
           formatting.black, -- python formatter
-          formatting.fourmolu, -- haskell formatter
           formatting.clang_format, -- c formatter
           diagnostics.pylint, -- python linter
-          diagnostics.eslint_d, -- js/ts? linter
         },
         -- configure format on save
         on_attach = function(current_client, bufnr)
@@ -175,6 +173,7 @@ return {
       -- configure haskell server
       lspconfig["hls"].setup({
         capabilities = capabilities,
+        -- on_attach = on_attach,
         on_attach = on_attach,
       })
 

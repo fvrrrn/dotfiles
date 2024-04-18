@@ -18,11 +18,11 @@ return {
       vim.keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", { desc = "Find string under cursor in cwd" })
 
       telescope.setup({
-        pickers = {
-          find_files = {
-            find_command = { "rg", "--files", "--hidden", "-g", "!.git" },
-          },
-        },
+        -- pickers = {
+        --   find_files = {
+        --     find_command = { "rg", "--files", "--hidden", "-g", "!.git" },
+        --   },
+        -- },
       })
     end,
   },
@@ -76,8 +76,7 @@ return {
         incremental_selection = {
           enable = true,
           keymaps = {
-            init_selection = "<C-space>",
-            node_incremental = "<C-space>",
+            node_incremental = "i",
             scope_incremental = false,
             node_decremental = "<bs>",
           },
@@ -89,6 +88,15 @@ return {
             goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer" },
             goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer" },
             goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer" },
+          },
+          lsp_interop = {
+            enable = true,
+            border = "none",
+            floating_preview_opts = {},
+            peek_definition_code = {
+              ["<leader>df"] = "@function.outer",
+              ["<leader>dF"] = "@class.outer",
+            },
           },
         },
       })

@@ -19,4 +19,3 @@ require("lazy").setup({
     notify = false,
   },
 })
---[[ "lewis6991/gitsigns.nvim" ]]

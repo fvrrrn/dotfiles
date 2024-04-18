@@ -288,6 +288,7 @@ return {
     priority = 1000, -- make sure to load this before all the other start plugins
     dependencies = {
       "rcarriga/nvim-dap-ui",
+      "nvim-neotest/nvim-nio",
       "mxsdev/nvim-dap-vscode-js",
       "theHamsta/nvim-dap-virtual-text",
       {
