@@ -2,7 +2,7 @@ return {
   {
     "nvim-telescope/telescope.nvim",
     tag = "0.1.5",
-    dependencies = { "nvim-lua/plenary.nvim" },
+    dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope-ui-select.nvim" },
     -- keys = {
     --   { "n", "<leader>ff", "<cmd>Telescope find_files<CR>", desc = "Fuzzy find files in cwd" },
     --   { "n", "<leader>fs", "<cmd>Telescope live_grep<CR>", desc = "Fuzzy find string in cwd" },
@@ -18,12 +18,33 @@ return {
       vim.keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", { desc = "Find string under cursor in cwd" })
 
       telescope.setup({
+        defaults = {
+          file_ignore_patterns = {
+            "yarn%.lock",
+            "node_modules/",
+            "raycast/",
+            "dist/",
+            "%.next",
+            "%.git/",
+            "%.gitlab/",
+            "build/",
+            "target/",
+            "package%-lock%.json",
+          },
+        },
+        extensions = {
+          ["ui-select"] = {
+            require("telescope.themes").get_dropdown(),
+          },
+        },
         -- pickers = {
         --   find_files = {
         --     find_command = { "rg", "--files", "--hidden", "-g", "!.git" },
         --   },
         -- },
       })
+
+      telescope.load_extension("ui-select")
     end,
   },
   {
