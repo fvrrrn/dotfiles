@@ -3,45 +3,42 @@ return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-      "williamboman/mason-lspconfig.nvim",
-      "williamboman/mason.nvim",
       "hrsh7th/cmp-nvim-lsp",
-      "WhoIsSethDaniel/mason-tool-installer.nvim",
-      "nvimtools/none-ls.nvim", -- configure formatters & linters
+      "nvimtools/none-ls.nvim",        -- configure formatters & linters
       "nvimtools/none-ls-extras.nvim", -- eslint_d
     },
     config = function()
-      require("mason").setup()
+      -- require("mason").setup()
+      --
+      -- require("mason-lspconfig").setup({
+      --   ensure_installed = {
+      --     -- language servers
+      --     "tsserver",
+      --     "html",
+      --     "cssls",
+      --     "lua_ls",
+      --     "pyright",
+      --     -- "hls",
+      --     "tailwindcss",
+      --     "clangd",
+      --   },
+      --   automatic_installation = true, -- not the same as ensure_installed
+      -- })
 
-      require("mason-lspconfig").setup({
-        ensure_installed = {
-          -- language servers
-          "tsserver",
-          "html",
-          "cssls",
-          "lua_ls",
-          "pyright",
-          "hls",
-          "tailwindcss",
-          "clangd",
-        },
-        automatic_installation = true, -- not the same as ensure_installed
-      })
-
-      require("mason-tool-installer").setup({
-        ensure_installed = {
-          -- linters
-          "pylint", -- python
-          "stylua", -- lua
-          "isort", -- python
-          "black", -- python
-        },
-        automatic_installation = true,
-      })
+      -- require("mason-tool-installer").setup({
+      --   ensure_installed = {
+      --     -- linters
+      --     "pylint", -- python
+      --     "stylua", -- lua
+      --     "isort", -- python
+      --     "black", -- python
+      --   },
+      --   automatic_installation = true,
+      -- })
 
       local null_ls = require("null-ls")
       -- for conciseness
-      local formatting = null_ls.builtins.formatting -- to setup formatters
+      local formatting = null_ls.builtins.formatting   -- to setup formatters
       local diagnostics = null_ls.builtins.diagnostics -- to setup linters
 
       -- to setup format on save
@@ -60,28 +57,23 @@ return {
           --  "formatting.prettier.with({disabled_filetypes: {}})" (see null-ls docs)
           formatting.prettier.with({
             extra_filetypes = { "svelte", "svg" },
-          }), -- js/ts formatter
-          formatting.stylua, -- lua formatter
-          formatting.isort, -- python formatter
-          formatting.black, -- python formatter
+          }),                      -- js/ts formatter
+          formatting.stylua,       -- lua formatter
+          formatting.isort,        -- python formatter
+          formatting.black,        -- python formatter
           formatting.clang_format, -- c formatter
-          diagnostics.pylint, -- python linter
+          diagnostics.pylint,      -- python linter
         },
+        debug = true,
         -- configure format on save
-        on_attach = function(current_client, bufnr)
-          if current_client.supports_method("textDocument/formatting") then
+        on_attach = function(client, bufnr)
+          if client.supports_method("textDocument/formatting") then
             vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
             vim.api.nvim_create_autocmd("BufWritePre", {
               group = augroup,
               buffer = bufnr,
               callback = function()
-                vim.lsp.buf.format({
-                  filter = function(client)
-                    --  only use null-ls for formatting instead of lsp server
-                    return client.name == "null-ls"
-                  end,
-                  bufnr = bufnr,
-                })
+                vim.lsp.buf.format({ async = false })
               end,
             })
           end
@@ -173,7 +165,6 @@ return {
       -- configure haskell server
       lspconfig["hls"].setup({
         capabilities = capabilities,
-        -- on_attach = on_attach,
         on_attach = on_attach,
       })
 
