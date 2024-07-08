@@ -3,7 +3,7 @@ set fish_greeting ''
 
 fish_vi_key_bindings
 
-alias dtf='/usr/bin/git --git-dir=$HOME/.dtf/ --work-tree=$HOME' 
+alias dtf='git --git-dir=$HOME/.dtf/ --work-tree=$HOME' 
 
 set fish_cursor_default block
 set fish_cursor_insert line
