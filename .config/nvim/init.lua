@@ -108,6 +108,10 @@ require("lazy").setup({
       end, { desc = "[/] Fuzzily search in current buffer" })
     end,
   },
+  {
+    "stevearc/oil.nvim",
+    opts = {},
+  },
   { -- COMPLETION
     "hrsh7th/nvim-cmp",
     event = "InsertEnter",
@@ -407,8 +411,8 @@ require("lazy").setup({
       -- used to enable autocompletion (assign to every lsp server config)
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-      -- configure html server
-      lspconfig["html"].setup({
+      -- -- configure nix server
+      lspconfig["nil_ls"].setup({
         capabilities = capabilities,
         on_attach = on_attach,
       })
@@ -419,14 +423,23 @@ require("lazy").setup({
         on_attach = on_attach,
       })
 
-      -- configure css server
+      lspconfig["html"].setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
+      })
+
+      -- lspconfig["vscode-eslint-language-server"].setup({
+      lspconfig["eslint"].setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
+      })
+
       lspconfig["cssls"].setup({
         capabilities = capabilities,
         on_attach = on_attach,
       })
 
-      -- configure tailwind server
-      lspconfig["tailwindcss"].setup({
+      lspconfig["jsonls"].setup({
         capabilities = capabilities,
         on_attach = on_attach,
       })
@@ -473,7 +486,7 @@ require("lazy").setup({
   },
   { -- FORMATTING
     "stevearc/conform.nvim",
-    lazy = false,
+    event = { "BufReadPre", "BufNewFile" },
     opts = {
       notify_on_error = false,
       format_on_save = function(bufnr)
@@ -493,6 +506,7 @@ require("lazy").setup({
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
         lua = { "stylua" },
+        nix = { "alejandra" },
 
         html = { { "prettierd", "prettier" } },
         css = { { "prettierd", "prettier" } },
@@ -516,7 +530,6 @@ require("lazy").setup({
     config = function()
       local lint = require("lint")
       lint.linters_by_ft = {
-        markdown = { "markdownlint" },
         javascript = { "eslint_d" },
         typescript = { "eslint_d" },
         javascriptreact = { "eslint_d" },

@@ -16,10 +16,16 @@ vim.keymap.set("v", "<silent>d", '"_d')
 vim.keymap.set("v", "<silent>D", '"_D')
 
 -- window management
-vim.keymap.set("n", "<leader>wv", "<C-w>v") -- split window vertically
-vim.keymap.set("n", "<leader>wh", "<C-w>s") -- split window horizontally
-vim.keymap.set("n", "<leader>we", "<C-w>=") -- make split windows equal width & height
+vim.keymap.set("n", "<leader>wv", "<C-w>v")     -- split window vertically
+vim.keymap.set("n", "<leader>wh", "<C-w>s")     -- split window horizontally
+vim.keymap.set("n", "<leader>we", "<C-w>=")     -- make split windows equal width & height
 vim.keymap.set("n", "<leader>wx", ":close<CR>") -- close current split window
+
+vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
+
+vim.keymap.set("n", "m", vim.diagnostic.goto_next, { desc = "Go to next [D]iagnostic message" })
+vim.keymap.set("n", "M", vim.diagnostic.goto_prev, { desc = "Go to previous [D]iagnostic message" })
+vim.keymap.set("n", "<leader>m", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 
 -- navigate windows
 vim.keymap.set("n", "<C-j>", "<C-w>j")
