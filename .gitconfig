@@ -9,3 +9,5 @@
   autoSetupRemote = true
 [includeIf "gitdir:~/work/"]
   path = ~/.gitconfig-work
+[includeIf "gitdir:~/work-2/"]
+  path = ~/.gitconfig-work-2
