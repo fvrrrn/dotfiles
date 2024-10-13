@@ -570,7 +570,18 @@ require("lazy").setup({
         pattern = "*bones",
         command = "hi Comment  gui=NONE |" .. "hi Constant gui=NONE",
       })
-      vim.api.nvim_command("colorscheme zenbones")
+    end,
+  },
+  {
+    "Mofiqul/vscode.nvim",
+    config = function()
+      local vsct = require("vscode")
+
+      vsct.setup({ color_overrides = {
+        vscBack = "#282c34",
+      } })
+
+      vim.api.nvim_command("colorscheme vscode")
     end,
   },
   change_detection = {

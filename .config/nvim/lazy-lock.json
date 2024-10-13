@@ -31,6 +31,7 @@
   "vim-dadbod-completion": { "branch": "master", "commit": "880f7e9f2959e567c718d52550f9fae1aa07aa81" },
   "vim-dadbod-ui": { "branch": "master", "commit": "2f344874918a3ab6bbe68fb866b3f003a639a5d2" },
   "vscode-js-debug": { "branch": "main", "commit": "ab03c689011747026b38a13468cd6b5b1e43f0d3" },
+  "vscode.nvim": { "branch": "main", "commit": "7de58b7a6d55fe48475d0ba2fddbcec871717761" },
   "which-key.nvim": { "branch": "main", "commit": "7915964e73c30ba5657e9a762c6570925dad421b" },
   "zen-mode.nvim": { "branch": "main", "commit": "a31cf7113db34646ca320f8c2df22cf1fbfc6f2a" },
   "zenbones.nvim": { "branch": "main", "commit": "e9ba8305f65524f9355515cdd8704b2c6ba2def6" }
