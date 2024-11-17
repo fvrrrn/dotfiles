@@ -7,5 +7,9 @@ dtf config --local status.showUntrackedFiles no
 ```
 
 provider: `gpg2 --export-secret-keys > pass.gpg`
+
 consumer: `scp pc:~/pass.gpg pass.gpg && gpg2 --import pass.gpg && rm pass.gpg`
+
 consumer: `git clone ssh://fvrn@192.168.1.2/~/.password-store/.git ~/.password-store`
+
+If Chrome cannot be launched try `rm -rf ~/.config/chromium/Single*`
