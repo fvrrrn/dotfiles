@@ -14,6 +14,15 @@ vim.opt.rtp:prepend(lazypath)
 require("config.keymaps")
 require("config.options")
 require("lazy").setup({
+  {
+    "nativerv/cyrillic.nvim",
+    event = { "VeryLazy" },
+    config = function()
+      require("cyrillic").setup({
+        no_cyrillic_abbrev = false, -- default
+      })
+    end,
+  },
   { -- NAVIGATION/TELESCOPE
     "nvim-telescope/telescope.nvim",
     tag = "0.1.5",
@@ -537,7 +546,7 @@ require("lazy").setup({
         json = { "eslint_d" },
       }
       local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
-      vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+      vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave", "TextChanged" }, {
         group = lint_augroup,
         callback = function()
           require("lint").try_lint()
@@ -581,9 +590,45 @@ require("lazy").setup({
         vscBack = "#282c34",
       } })
 
-      vim.api.nvim_command("colorscheme vscode")
+      -- vim.api.nvim_command("colorscheme vscode")
     end,
   },
+  {
+    "ellisonleao/gruvbox.nvim",
+    priority = 1000,
+    config = function()
+      require("gruvbox").setup({
+        italic = {
+          strings = false,
+          emphasis = true,
+          comments = false,
+          operators = false,
+          folds = true,
+        },
+      })
+
+      vim.o.background = "light" -- or "dark" for light mode
+      vim.api.nvim_command("colorscheme gruvbox")
+    end,
+  },
+  -- {
+  --   "morhetz/gruvbox",
+  --   priority = 1000,
+  --   config = function()
+  --     -- require("gruvbox").setup({
+  --     --   italic = {
+  --     --     strings = false,
+  --     --     emphasis = true,
+  --     --     comments = false,
+  --     --     operators = false,
+  --     --     folds = true,
+  --     --   },
+  --     -- })
+  --
+  --     -- vim.o.background = "light" -- or "dark" for light mode
+  --     vim.api.nvim_command("colorscheme gruvbox")
+  --   end,
+  -- },
   change_detection = {
     notify = false,
   },
