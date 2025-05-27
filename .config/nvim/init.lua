@@ -426,28 +426,6 @@ require("lazy").setup({
         on_attach = on_attach,
       })
 
-      -- configure typescript server with plugin
-      lspconfig["tsserver"].setup({
-        capabilities = capabilities,
-        on_attach = on_attach,
-      })
-
-      lspconfig["html"].setup({
-        capabilities = capabilities,
-        on_attach = on_attach,
-      })
-
-      -- lspconfig["vscode-eslint-language-server"].setup({
-      lspconfig["eslint"].setup({
-        capabilities = capabilities,
-        on_attach = on_attach,
-      })
-
-      lspconfig["cssls"].setup({
-        capabilities = capabilities,
-        on_attach = on_attach,
-      })
-
       lspconfig["jsonls"].setup({
         capabilities = capabilities,
         on_attach = on_attach,
@@ -510,41 +488,37 @@ require("lazy").setup({
       end,
       formatters_by_ft = {
         -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
+        python = { "isort", "black" },
         --
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
         lua = { "stylua" },
         nix = { "alejandra" },
-
-        html = { { "prettierd", "prettier" } },
-        css = { { "prettierd", "prettier" } },
-        scss = { { "prettierd", "prettier" } },
-        less = { { "prettierd", "prettier" } },
-        javascript = { { "prettierd", "prettier" } },
-        javascriptreact = { { "prettierd", "prettier" } },
-        typescript = { { "prettierd", "prettier" } },
-        typescriptreact = { { "prettierd", "prettier" } },
-        vue = { { "prettierd", "prettier" } },
-
-        json = { { "prettierd", "prettier" } },
-        jsonc = { { "prettierd", "prettier" } },
-        yaml = { { "prettierd", "prettier" } },
       },
     },
   },
   { -- LINTING
     "mfussenegger/nvim-lint",
     event = { "BufReadPre", "BufNewFile" },
+    opts = {
+      linters = {
+        eslint_d = {
+          args = {
+            "--no-warn-ignored", -- <-- this is the key argument
+            "--format",
+            "json",
+            "--stdin",
+            "--stdin-filename",
+            function()
+              return vim.api.nvim_buf_get_name(0)
+            end,
+          },
+        },
+      },
+    },
     config = function()
       local lint = require("lint")
-      lint.linters_by_ft = {
-        javascript = { "eslint_d" },
-        typescript = { "eslint_d" },
-        javascriptreact = { "eslint_d" },
-        typescriptreact = { "eslint_d" },
-        json = { "eslint_d" },
-      }
+      lint.linters_by_ft = {}
       local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
       vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave", "TextChanged" }, {
         group = lint_augroup,
@@ -582,18 +556,6 @@ require("lazy").setup({
     end,
   },
   {
-    "Mofiqul/vscode.nvim",
-    config = function()
-      local vsct = require("vscode")
-
-      vsct.setup({ color_overrides = {
-        vscBack = "#282c34",
-      } })
-
-      -- vim.api.nvim_command("colorscheme vscode")
-    end,
-  },
-  {
     "ellisonleao/gruvbox.nvim",
     priority = 1000,
     config = function()
@@ -611,24 +573,6 @@ require("lazy").setup({
       vim.api.nvim_command("colorscheme gruvbox")
     end,
   },
-  -- {
-  --   "morhetz/gruvbox",
-  --   priority = 1000,
-  --   config = function()
-  --     -- require("gruvbox").setup({
-  --     --   italic = {
-  --     --     strings = false,
-  --     --     emphasis = true,
-  --     --     comments = false,
-  --     --     operators = false,
-  --     --     folds = true,
-  --     --   },
-  --     -- })
-  --
-  --     -- vim.o.background = "light" -- or "dark" for light mode
-  --     vim.api.nvim_command("colorscheme gruvbox")
-  --   end,
-  -- },
   change_detection = {
     notify = false,
   },
@@ -637,19 +581,11 @@ require("lazy").setup({
     dependencies = {
       "rcarriga/nvim-dap-ui",
       "nvim-neotest/nvim-nio",
-      "mxsdev/nvim-dap-vscode-js",
       "theHamsta/nvim-dap-virtual-text",
-      {
-        "microsoft/vscode-js-debug",
-        version = "1.x",
-        -- build debugger from source
-        build = "npm i && npm run compile vsDebugServerBundle && mv dist out",
-      },
     },
     config = function()
       local dap = require("dap")
       local dapui = require("dapui")
-      local dap_vscode_js = require("dap-vscode-js")
       local nvim_dap_virtual_text = require("nvim-dap-virtual-text")
 
       -- ╭──────────────────────────────────────────────────────────╮
@@ -793,120 +729,10 @@ require("lazy").setup({
       -- ╭──────────────────────────────────────────────────────────╮
       -- │ Adapters                                                 │
       -- ╰──────────────────────────────────────────────────────────╯
-      dap_vscode_js.setup({
-        -- node_path = "node", -- Path of node executable. Defaults to $NODE_PATH, and then "node"
-        debugger_path = vim.fn.stdpath("data") .. "/lazy/vscode-js-debug",
-        -- debugger_cmd = { "js-debug" }, -- Command to use to launch the debug server. Takes precedence over `node_path` and `debugger_path`.
-        adapters = { "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" }, -- which adapters to register in nvim-dap
-        -- log_file_path = "(stdpath cache)/dap_vscode_js.log" -- Path for file logging
-        -- log_file_level = false -- Logging level for output to file. Set to false to disable file logging.
-        -- log_console_level = vim.log.levels.ERROR -- Logging level for output to console. Set to false to disable console output.
-      })
 
       -- ╭──────────────────────────────────────────────────────────╮
       -- │ Configurations                                           │
       -- ╰──────────────────────────────────────────────────────────╯
-      for _, language in ipairs({ "typescript", "javascript", "svelte", "typescriptreact", "javascriptreact" }) do
-        dap.configurations[language] = {
-          {
-            type = "pwa-chrome",
-            request = "launch",
-            name = 'Launch Chrome with "localhost"',
-            url = "https://localapp.dev.cyberprod.ru:3443/",
-            port = 9222,
-            webRoot = "${workspaceFolder}",
-          },
-          {
-            type = "pwa-node",
-            request = "launch",
-            name = "Launch Current File (pwa-node)",
-            cwd = vim.fn.getcwd(),
-            args = { "${file}" },
-            sourceMaps = true,
-            protocol = "inspector",
-          },
-          {
-            type = "pwa-node",
-            request = "launch",
-            name = "Launch Current File (pwa-node with ts-node)",
-            cwd = vim.fn.getcwd(),
-            runtimeArgs = { "--loader", "ts-node/esm" },
-            runtimeExecutable = "node",
-            args = { "${file}" },
-            sourceMaps = true,
-            protocol = "inspector",
-            skipFiles = { "<node_internals>/**", "node_modules/**" },
-            resolveSourceMapLocations = {
-              "${workspaceFolder}/**",
-              "!**/node_modules/**",
-            },
-          },
-          {
-            type = "pwa-node",
-            request = "launch",
-            name = "Launch Current File (pwa-node with deno)",
-            cwd = vim.fn.getcwd(),
-            runtimeArgs = { "run", "--inspect-brk", "--allow-all", "${file}" },
-            runtimeExecutable = "deno",
-            attachSimplePort = 9229,
-          },
-          {
-            type = "pwa-node",
-            request = "launch",
-            name = "Launch Test Current File (pwa-node with jest)",
-            cwd = vim.fn.getcwd(),
-            runtimeArgs = { "${workspaceFolder}/node_modules/.bin/jest" },
-            runtimeExecutable = "node",
-            args = { "${file}", "--coverage", "false" },
-            rootPath = "${workspaceFolder}",
-            sourceMaps = true,
-            console = "integratedTerminal",
-            internalConsoleOptions = "neverOpen",
-            skipFiles = { "<node_internals>/**", "node_modules/**" },
-          },
-          {
-            type = "pwa-node",
-            request = "launch",
-            name = "Launch Test Current File (pwa-node with vitest)",
-            cwd = vim.fn.getcwd(),
-            program = "${workspaceFolder}/node_modules/vitest/vitest.mjs",
-            args = { "--inspect-brk", "--threads", "false", "run", "${file}" },
-            autoAttachChildProcesses = true,
-            smartStep = true,
-            console = "integratedTerminal",
-            skipFiles = { "<node_internals>/**", "node_modules/**" },
-          },
-          {
-            type = "pwa-node",
-            request = "launch",
-            name = "Launch Test Current File (pwa-node with deno)",
-            cwd = vim.fn.getcwd(),
-            runtimeArgs = { "test", "--inspect-brk", "--allow-all", "${file}" },
-            runtimeExecutable = "deno",
-            attachSimplePort = 9229,
-          },
-          {
-            type = "pwa-chrome",
-            request = "attach",
-            name = "Attach Program (pwa-chrome, select port)",
-            program = "${file}",
-            cwd = vim.fn.getcwd(),
-            sourceMaps = true,
-            port = function()
-              return vim.fn.input("Select port: ", 9222)
-            end,
-            webRoot = "${workspaceFolder}",
-          },
-          -- {
-          --   type = "pwa-node",
-          --   request = "attach",
-          --   name = "Attach Program (pwa-node, select pid)",
-          --   cwd = vim.fn.getcwd(),
-          --   processId = dap.utils.pick_process,
-          --   skipFiles = { "<node_internals>/**" },
-          -- },
-        }
-      end
     end,
   },
   {
