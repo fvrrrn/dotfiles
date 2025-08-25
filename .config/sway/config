@@ -34,15 +34,17 @@ hide_edge_borders smart_no_gaps
 #   output HDMI-A-1 resolution 1920x1080 position 1920,0
 #
 # You can get the names of your outputs by running: swaymsg -t get_outputs
+# output HDMI-A-1 resolution 640x480 position 2560,0
+output HDMI-A-1 disable
 
 ### Idle configuration
 #
 # Example configuration:
 #
-# exec swayidle -w \
-#          timeout 300 'swaylock -f -c 000000' \
-#          timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
-#          before-sleep 'swaylock -f -c 000000'
+exec swayidle -w \
+         timeout 300 'swaylock -f -c 000000' \
+         timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
+         before-sleep 'swaylock -f -c 000000'
 #
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
@@ -71,13 +73,13 @@ hide_edge_borders smart_no_gaps
 # Basics:
 #
     # Start a terminal
-    bindsym $mod+Return exec $term
+    bindsym --to-code $mod+Return exec $term
 
     # Kill focused window
-    bindsym $mod+Shift+q kill
+    bindsym --to-code $mod+Shift+q kill
 
     # Start your launcher
-    bindsym $mod+d exec $menu
+    bindsym --to-code $mod+d exec $menu
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -87,59 +89,59 @@ hide_edge_borders smart_no_gaps
     floating_modifier $mod normal
 
     # Reload the configuration file
-    bindsym $mod+Shift+c reload
+    bindsym --to-code $mod+Shift+c reload
 
     # Exit sway (logs you out of your Wayland session)
-    bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+    bindsym --to-code $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
 #
 # Moving around:
 #
     # Move your focus around
-    bindsym $mod+$left focus left
-    bindsym $mod+$down focus down
-    bindsym $mod+$up focus up
-    bindsym $mod+$right focus right
+    bindsym --to-code $mod+$left focus down
+    bindsym --to-code $mod+$down focus left
+    bindsym --to-code $mod+$up focus right
+    bindsym --to-code $mod+$right focus up
     # Or use $mod+[up|down|left|right]
-    bindsym $mod+Left focus left
-    bindsym $mod+Down focus down
-    bindsym $mod+Up focus up
-    bindsym $mod+Right focus right
+    bindsym --to-code $mod+Left focus left
+    bindsym --to-code $mod+Down focus down
+    bindsym --to-code $mod+Up focus up
+    bindsym --to-code $mod+Right focus right
 
     # Move the focused window with the same, but add Shift
-    bindsym $mod+Shift+$left move left
-    bindsym $mod+Shift+$down move down
-    bindsym $mod+Shift+$up move up
-    bindsym $mod+Shift+$right move right
+    bindsym --to-code $mod+Shift+$left move left
+    bindsym --to-code $mod+Shift+$down move down
+    bindsym --to-code $mod+Shift+$up move up
+    bindsym --to-code $mod+Shift+$right move right
     # Ditto, with arrow keys
-    bindsym $mod+Shift+Left move left
-    bindsym $mod+Shift+Down move down
-    bindsym $mod+Shift+Up move up
-    bindsym $mod+Shift+Right move right
+    bindsym --to-code $mod+Shift+Left move left
+    bindsym --to-code $mod+Shift+Down move down
+    bindsym --to-code $mod+Shift+Up move up
+    bindsym --to-code $mod+Shift+Right move right
 #
 # Workspaces:
 #
     # Switch to workspace
-    bindsym $mod+1 workspace number 1
-    bindsym $mod+2 workspace number 2
-    bindsym $mod+3 workspace number 3
-    bindsym $mod+4 workspace number 4
-    bindsym $mod+5 workspace number 5
-    bindsym $mod+6 workspace number 6
-    bindsym $mod+7 workspace number 7
-    bindsym $mod+8 workspace number 8
-    bindsym $mod+9 workspace number 9
-    bindsym $mod+0 workspace number 10
+    bindsym --to-code $mod+1 workspace number 1
+    bindsym --to-code $mod+2 workspace number 2
+    bindsym --to-code $mod+3 workspace number 3
+    bindsym --to-code $mod+4 workspace number 4
+    bindsym --to-code $mod+5 workspace number 5
+    bindsym --to-code $mod+6 workspace number 6
+    bindsym --to-code $mod+7 workspace number 7
+    bindsym --to-code $mod+8 workspace number 8
+    bindsym --to-code $mod+9 workspace number 9
+    bindsym --to-code $mod+0 workspace number 10
     # Move focused container to workspace
-    bindsym $mod+Shift+1 move container to workspace number 1
-    bindsym $mod+Shift+2 move container to workspace number 2
-    bindsym $mod+Shift+3 move container to workspace number 3
-    bindsym $mod+Shift+4 move container to workspace number 4
-    bindsym $mod+Shift+5 move container to workspace number 5
-    bindsym $mod+Shift+6 move container to workspace number 6
-    bindsym $mod+Shift+7 move container to workspace number 7
-    bindsym $mod+Shift+8 move container to workspace number 8
-    bindsym $mod+Shift+9 move container to workspace number 9
-    bindsym $mod+Shift+0 move container to workspace number 10
+    bindsym --to-code $mod+Shift+1 move container to workspace number 1
+    bindsym --to-code $mod+Shift+2 move container to workspace number 2
+    bindsym --to-code $mod+Shift+3 move container to workspace number 3
+    bindsym --to-code $mod+Shift+4 move container to workspace number 4
+    bindsym --to-code $mod+Shift+5 move container to workspace number 5
+    bindsym --to-code $mod+Shift+6 move container to workspace number 6
+    bindsym --to-code $mod+Shift+7 move container to workspace number 7
+    bindsym --to-code $mod+Shift+8 move container to workspace number 8
+    bindsym --to-code $mod+Shift+9 move container to workspace number 9
+    bindsym --to-code $mod+Shift+0 move container to workspace number 10
     # Note: workspaces can have any name you want, not just numbers.
     # We just use 1-10 as the default.
 #
@@ -148,25 +150,25 @@ hide_edge_borders smart_no_gaps
     # You can "split" the current object of your focus with
     # $mod+b or $mod+v, for horizontal and vertical splits
     # respectively.
-    bindsym $mod+b splith
-    bindsym $mod+v splitv
+    bindsym --to-code $mod+b splith
+    bindsym --to-code $mod+v splitv
 
     # Switch the current container between different layout styles
-    bindsym $mod+s layout stacking
-    bindsym $mod+w layout tabbed
-    bindsym $mod+e layout toggle split
+    bindsym --to-code $mod+s layout stacking
+    bindsym --to-code $mod+w layout tabbed
+    bindsym --to-code $mod+e layout toggle split
 
     # Make the current focus fullscreen
-    bindsym $mod+f fullscreen
+    bindsym --to-code $mod+f fullscreen
 
     # Toggle the current focus between tiling and floating mode
-    bindsym $mod+Shift+space floating toggle
+    bindsym --to-code $mod+Shift+space floating toggle
 
     # Swap focus between the tiling area and the floating area
-    bindsym $mod+space focus mode_toggle
+    bindsym --to-code $mod+space focus mode_toggle
 
     # Move focus to the parent container
-    bindsym $mod+a focus parent
+    bindsym --to-code $mod+a focus parent
 #
 # Scratchpad:
 #
@@ -174,11 +176,11 @@ hide_edge_borders smart_no_gaps
     # You can send windows there and get them back later.
 
     # Move the currently focused window to the scratchpad
-    bindsym $mod+Shift+minus move scratchpad
+    bindsym --to-code $mod+Shift+minus move scratchpad
 
     # Show the next scratchpad window or hide the focused scratchpad window.
     # If there are multiple scratchpad windows, this command cycles through them.
-    bindsym $mod+minus scratchpad show
+    bindsym --to-code $mod+minus scratchpad show
 #
 # Resizing containers:
 #
@@ -187,35 +189,46 @@ mode "resize" {
     # right will grow the containers width
     # up will shrink the containers height
     # down will grow the containers height
-    bindsym $left resize shrink width 10px
-    bindsym $down resize grow height 10px
-    bindsym $up resize shrink height 10px
-    bindsym $right resize grow width 10px
+    bindsym --to-code $left resize shrink width 10px
+    bindsym --to-code $down resize grow height 10px
+    bindsym --to-code $up resize shrink height 10px
+    bindsym --to-code $right resize grow width 10px
 
     # Ditto, with arrow keys
-    bindsym Left resize shrink width 10px
-    bindsym Down resize grow height 10px
-    bindsym Up resize shrink height 10px
-    bindsym Right resize grow width 10px
+    bindsym --to-code Left resize shrink width 10px
+    bindsym --to-code Down resize grow height 10px
+    bindsym --to-code Up resize shrink height 10px
+    bindsym --to-code Right resize grow width 10px
 
     # Return to default mode
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
+    bindsym --to-code Return mode "default"
+    bindsym --to-code Escape mode "default"
 }
-bindsym $mod+r mode "resize"
+bindsym --to-code $mod+r mode "resize"
 #
 # Utilities:
 #
     # Special keys to adjust volume via PulseAudio
-    bindsym --locked XF86AudioMute exec pactl set-sink-mute \@DEFAULT_SINK@ toggle
-    bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume \@DEFAULT_SINK@ -5%
-    bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume \@DEFAULT_SINK@ +5%
-    bindsym --locked XF86AudioMicMute exec pactl set-source-mute \@DEFAULT_SOURCE@ toggle
+    bindsym --to-code --locked XF86AudioMute exec pactl set-sink-mute \@DEFAULT_SINK@ toggle
+    bindsym --to-code --locked XF86AudioLowerVolume exec pactl set-sink-volume \@DEFAULT_SINK@ -5%
+    bindsym --to-code --locked XF86AudioRaiseVolume exec pactl set-sink-volume \@DEFAULT_SINK@ +5%
+    bindsym --to-code --locked XF86AudioMicMute exec pactl set-source-mute \@DEFAULT_SOURCE@ toggle
     # Special keys to adjust brightness via brightnessctl
-    bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
-    bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
-    # Special key to take a screenshot with grim
-    bindsym Print exec grim
+    bindsym --to-code --locked XF86MonBrightnessDown exec brightnessctl set 5%-
+    bindsym --to-code --locked XF86MonBrightnessUp exec brightnessctl set 5%+
+
+# Screenshot: full screen
+bindsym --to-code --locked Print exec grim ~/Downloads/screenshot_$(date +'%Y-%m-%d_%H-%M-%S').png
+
+# Screenshot: select region with slurp
+bindsym --to-code --locked Shift+Print exec grim -g "$(slurp)" ~/Downloads/screenshot_$(date +'%Y-%m-%d_%H-%M-%S').png
+
+# Screenshot: copy full screen to clipboard (requires wl-clipboard)
+bindsym --to-code --locked Ctrl+Print exec grim -t png - | wl-copy
+
+# Screenshot: select region and copy to clipboard
+bindsym --to-code --locked Ctrl+Shift+Print exec grim -g "$(slurp)" -t png - | wl-copy
+   
 
 #
 # Status Bar:
@@ -226,13 +239,28 @@ bar {
 
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
-    status_command while date +'%Y-%m-%d %X'; do sleep 1; done
+    # status_command while date +'%Y-%m-%d %X'; do sleep 1; done
+
+    status_command ~/.config/sway/status.sh
 
     colors {
-        statusline #ffffff
-        background #323232
-        inactive_workspace #32323200 #32323200 #5c5c5c
-    }
+          background        #000000
+          statusline        #ffffff
+          separator         #666666
+
+          focused_workspace #4c7899 #285577 #ffffff
+          active_workspace  #333333 #5f676a #ffffff
+          inactive_workspace #333333 #222222 #888888
+          urgent_workspace  #2f343a #900000 #ffffff
+          binding_mode      #2f343a #900000 #ffffff
+      }
+}
+
+input * {
+    repeat_delay 200
+    repeat_rate 50
+    xkb_layout us,ru
+    xkb_options grp:toggle
 }
 
 include /etc/sway/config.d/*
