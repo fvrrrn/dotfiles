@@ -23,4 +23,7 @@
   path = ~/.gitconfig-work
 [includeIf "gitdir:~/work-2/"]
   path = ~/.gitconfig-work-2
+[includeIf "gitdir:~/s21/"]
+  path = ~/.gitconfig-s21
+
 

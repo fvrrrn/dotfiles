@@ -84,6 +84,11 @@ require("lazy").setup({
             -- the default case_mode is "smart_case"
           },
         },
+        pickers = {
+          colorscheme = {
+            enable_preview = true,
+          },
+        },
         -- pickers = {
         --   find_files = {
         --     find_command = { "rg", "--files", "--hidden", "-g", "!.git" },
@@ -469,7 +474,31 @@ require("lazy").setup({
         capabilities = capabilities,
         on_attach = on_attach,
       })
+
+      -- configure typst server
+      lspconfig["tinymist"].setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
+        settings = {
+          formatterMode = "typstyle",
+          exportPdf = "never",
+          semanticTokens = "disable",
+        },
+      })
     end,
+  },
+  {
+    "chomosuke/typst-preview.nvim",
+    -- lazy = false
+    ft = "typst",
+    version = "1.*",
+    opts = {
+      dependencies_bin = {
+        ["tinymist"] = "/nix/store/m9nr03aavkp8i6ip59byznvf4knyvjv4-system-path/bin/tinymist",
+        ["websocat"] = nil,
+        port = 40000,
+      },
+    },
   },
   { -- FORMATTING
     "stevearc/conform.nvim",
@@ -494,6 +523,11 @@ require("lazy").setup({
         -- is found.
         lua = { "stylua" },
         nix = { "alejandra" },
+        c = { "clang-format" },
+        cpp = { "clang-format" },
+        cmake = { "cmake_format" },
+        sh = { "shfmt" },
+        typst = { "typstyle" },
       },
     },
   },
@@ -553,6 +587,9 @@ require("lazy").setup({
         pattern = "*bones",
         command = "hi Comment  gui=NONE |" .. "hi Constant gui=NONE",
       })
+
+      vim.api.nvim_command("colorscheme zenwritten")
+      vim.o.background = "dark" -- or "dark" for light mode
     end,
   },
   {
@@ -569,8 +606,23 @@ require("lazy").setup({
         },
       })
 
-      vim.o.background = "light" -- or "dark" for light mode
-      vim.api.nvim_command("colorscheme gruvbox")
+      -- vim.o.background = "light" -- or "dark" for light mode
+      -- vim.api.nvim_command("colorscheme gruvbox")
+    end,
+  },
+  {
+
+    "Mofiqul/vscode.nvim",
+
+    config = function()
+      local vsct = require("vscode")
+
+      vsct.setup({ color_overrides = {
+
+        vscBack = "#282c34",
+      } })
+
+      -- vim.api.nvim_command("colorscheme vscode")
     end,
   },
   change_detection = {
