@@ -431,11 +431,6 @@ require("lazy").setup({
         on_attach = on_attach,
       })
 
-      lspconfig["jsonls"].setup({
-        capabilities = capabilities,
-        on_attach = on_attach,
-      })
-
       -- configure python server
       lspconfig["pyright"].setup({
         capabilities = capabilities,
@@ -528,6 +523,7 @@ require("lazy").setup({
         cmake = { "cmake_format" },
         sh = { "shfmt" },
         typst = { "typstyle" },
+        json = { "jq" },
       },
     },
   },

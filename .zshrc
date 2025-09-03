@@ -1,12 +1,19 @@
 HISTFILE=~/.cache/zsh/history
 HISTSIZE=1000
 SAVEHIST=1000
+mkdir -p ~/.cache/zsh
+
+setopt appendhistory
+setopt incappendhistory
+setopt sharehistory
+setopt histignorealldups
+setopt extended_history
 
 source <(fzf --zsh)
 
 alias dtf='git --git-dir=$HOME/.dtf/ --work-tree=$HOME' 
 
-unsetopt autocd
+setopt autocd
 
 # Basic auto/tab complete:
 autoload -U compinit
