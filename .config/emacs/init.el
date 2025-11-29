@@ -32,11 +32,11 @@
 
 (package-initialize)
 (unless package-archive-contents
- (package-refresh-contents))
+  (package-refresh-contents))
 
 ;; Initialize use-package on non-Linux platforms
 (unless (package-installed-p 'use-package)
-   (package-install 'use-package))
+  (package-install 'use-package))
 
 (require 'use-package)
 (setq use-package-always-ensure t)
@@ -45,11 +45,14 @@
 
 (use-package almost-mono-themes
   :config
-  ;; (load-theme 'almost-mono-white t)
+  ;;  (load-theme 'almost-mono-white t))
   ;; (load-theme 'almost-mono-black t)
   ;; (load-theme 'almost-mono-gray t)
   ;; (load-theme 'almost-mono-cream t)
   (load-theme 'almost-mono-gray t))
+
+(unless (package-installed-p 'org-mode)
+  (package-vc-install '(org-mode :url "https://code.tecosaur.net/tec/org-mode" :branch "dev")))
 
 (use-package evil
   :init
@@ -116,29 +119,85 @@
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
-(use-package org-preview-html)
+;; Org-mode
+(defvar org-babel-default-header-args '((:results . "output") (:noweb . "yes")))
 
-(require 'org)
-(setq org-src-fontify-natively t)
-(setq org-confirm-babel-evaluate nil)
+(defvar org-babel-default-header-args:jupyter '((:results . "output") (:kernel . "python3") (:session . "hello") (:async . "yes")))
 
+(defun org-enter-maybe-execute ()
+  (interactive)
+  (if (org-in-src-block-p)
+      (org-babel-execute-src-block)
+    (newline)))
+
+(use-package latex-preview-pane)
+(use-package org-fragtog
+  :after org 
+  :config (setq org-preview-latex-image-directory (concat (getenv "HOME") "/.cache"))
+  ;; :custom (org-startup-with-latex-preview t)
+  :hook (org-mode . org-fragtog-mode)
+  :hook (org-babel-after-execute . org-redisplay-inline-images) ;; render plots automatically
+  :custom
+  (org-format-latex-options
+   (plist-put org-format-latex-options :scale 2)
+   (plist-put org-format-latex-options :foreground 'auto)
+   (plist-put org-format-latex-options :background 'auto)))
 
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((python . t)))   ;; enable python
+ '((emacs-lisp . t)
+   ;; (C . t)
+   (python . t)
+   ;; (css . t)
+   ;; (jupyter . t)
+   (shell . t)))
 
 
 (setq python-shell-interpreter "ipython"
-    python-shell-interpreter-args "-i --simple-prompt")
+      python-shell-interpreter-args "-i --simple-prompt")
+
+(require 'org)
+;; (use-package org-preview-html)
+(setq org-src-preserve-indentation nil
+      org-export-wth-toc nil
+      org-src-tab-acts-natively t
+      org-confirm-babel-evaluate nil
+      org-startup-indented t
+      org-return-follows-link t
+      org-hide-emphasis-markers t)
+
+(add-to-list 'org-babel-after-execute-hook (function org-latex-preview))
+(setq org-latex-compiler "lualatex")
+
+(setq org-preview-latex-default-process 'dvisvgm)
+(setq org-preview-latex-process-alist
+      '((dvisvgm :programs ("lualatex" "dvisvgm")
+                 :description "pdf > svg"
+                 :message "You need to install lualatex and dvisvgm."
+                 :image-input-type "pdf"
+                 :image-output-type "svg"
+                 :image-size-adjust (1.7 . 1.5)
+                 :latex-compiler ("lualatex -interaction=nonstopmode -shell-escape -output-directory=%o %f")
+                 :image-converter ("dvisvgm %f -n -b min -c %S -o %O"))))
 
 
-; (setq org-latex-compiler "lualatex")
-; (setq org-preview-latex-default-process 'dvisvgm)
+;; Optional: auto-enable preview on entering org-mode
+(add-hook 'org-mode-hook #'org-latex-preview-auto-mode)
 
 
 (with-eval-after-load 'evil
-  (define-key evil-normal-state-map (kbd "C-f") #'consult-find))
+  (define-key evil-normal-state-map (kbd "C-f") #'consult-find)
+  (define-key evil-normal-state-map (kbd "C-b") #'consult-buffer))
 
 (with-eval-after-load 'vertico
   (define-key vertico-map (kbd "C-j") #'vertico-next)
   (define-key vertico-map (kbd "C-k") #'vertico-previous))
+
+;; Formatter
+(use-package apheleia
+  :ensure t
+  :config
+  (setf (alist-get 'python-mode apheleia-mode-alist) '(black))
+  (setf (alist-get 'c-mode apheleia-mode-alist) '(clang-format))
+  ;; Enable globally
+  (apheleia-global-mode +1))
