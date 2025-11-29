@@ -217,17 +217,13 @@ bindsym --to-code $mod+r mode "resize"
     bindsym --to-code --locked XF86MonBrightnessDown exec brightnessctl set 5%-
     bindsym --to-code --locked XF86MonBrightnessUp exec brightnessctl set 5%+
 
-# Screenshot: full screen
-bindsym --to-code --locked Print exec grim ~/Downloads/screenshot_$(date +'%Y-%m-%d_%H-%M-%S').png
 
-# Screenshot: select region with slurp
-bindsym --to-code --locked Shift+Print exec grim -g "$(slurp)" ~/Downloads/screenshot_$(date +'%Y-%m-%d_%H-%M-%S').png
-
-# Screenshot: copy full screen to clipboard (requires wl-clipboard)
-bindsym --to-code --locked Ctrl+Print exec grim -t png - | wl-copy
+# Screen recording: select region, save to ~/Downloads, copy file path to clipboard
+bindsym --to-code --locked Shift+Print exec wf-recorder -g "$(slurp)" -f ~/Downloads/record_$(date +'%Y-%m-%d_%H-%M-%S').mp4 && wl-copy <<< ~/Downloads/record_$(date +'%Y-%m-%d_%H-%M-%S').mp4
+bindsym --to-code --locked Ctrl+Shift+Print exec pkill -INT wf-recorder
 
 # Screenshot: select region and copy to clipboard
-bindsym --to-code --locked Ctrl+Shift+Print exec grim -g "$(slurp)" -t png - | wl-copy
+bindsym --to-code --locked Print exec grim -g "$(slurp)" -t png - | wl-copy
    
 
 #
@@ -262,5 +258,7 @@ input * {
     xkb_layout us,ru
     xkb_options grp:toggle
 }
+
+seat seat0 hide_cursor 3000
 
 include /etc/sway/config.d/*

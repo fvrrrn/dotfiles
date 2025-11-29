@@ -1,9 +1,13 @@
 ```bash
-git clone --bare git@github.com/fvrrrn/dotfiles-public.git ~/.dtf
+git clone --bare git@github.com/fvrrrn/dotfiles.git ~/.dtf
 alias dtf='git --git-dir=$HOME/.dtf/ --work-tree=$HOME/'
-rm ~/.config/fish/fish_variables && rm ~/.config/fish/config.fish
 dtf checkout
 dtf config --local status.showUntrackedFiles no
+```
+
+To install neovim dependencies such as TreeSitter or native-fzf run:
+```sh
+nix shell nixpkgs#gcc nixpkgs#gnumake
 ```
 
 provider: `gpg2 --export-secret-keys > pass.gpg`
