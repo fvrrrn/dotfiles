@@ -538,6 +538,19 @@ require("lazy").setup({
       })
     end,
   },
+  {
+    "saghen/blink.cmp",
+    event = "InsertEnter",
+    version = "*",
+    opts = {
+      keymap = {
+        ["<CR>"] = { "accept", "fallback" },
+        ["<C-e>"] = { "hide", "fallback" },
+        ["<C-j>"] = { "select_next", "fallback" },
+        ["<C-k>"] = { "select_prev" },
+      },
+    },
+  },
 })
 
 -- Disable netrw
@@ -724,6 +737,13 @@ vim.lsp.config("ruff", {
   root_markers = { "pyproject.toml", "ruff.toml", ".ruff.toml", ".git" },
 })
 
+vim.lsp.config("nil", {
+  cmd = { "nil" },
+  capabilities = capabilities,
+  filetypes = { "nix" },
+  root_markers = { "flake.nix", ".git" },
+})
+
 -- Neovim 0.11+ completion API
 -- vim.api.nvim_create_autocmd("LspAttach", {
 --   callback = function(ev)
@@ -749,6 +769,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
     vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
     vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
     vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
+
+    vim.keymap.set("n", "m", vim.diagnostic.goto_next, opts)
+    vim.keymap.set("n", "m", vim.diagnostic.goto_prev, opts)
+
     vim.keymap.set("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts)
     vim.keymap.set("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, opts)
     vim.keymap.set("n", "<leader>wl", function()
@@ -764,4 +788,4 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
-vim.lsp.enable({ "lua_ls", "basedpyright", "ruff" })
+vim.lsp.enable({ "lua_ls", "basedpyright", "ruff", "nil" })
