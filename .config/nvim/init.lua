@@ -111,10 +111,9 @@ require("lazy").setup({
       local builtin = require("telescope.builtin")
       vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "[S]earch [H]elp" })
       vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
-      vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "[S]earch [F]iles" })
+      vim.keymap.set("n", "<C-f>", builtin.find_files, { desc = "[S]earch [F]iles" })
       -- vim.keymap.set("n", "<leader>fs", builtin.builtin, { desc = "[S]earch [S]elect Telescope" })
-      vim.keymap.set("n", "<leader>fw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
-      vim.keymap.set("n", "<leader>fs", builtin.live_grep, { desc = "[S]earch by [G]rep" })
+      vim.keymap.set("n", "<S-f>", builtin.live_grep, { desc = "[S]earch by [G]rep" })
       vim.keymap.set("n", "<leader>fd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
       vim.keymap.set("n", "<leader>r", builtin.resume, { desc = "[S]earch [R]esume" })
       vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
@@ -670,9 +669,6 @@ vim.keymap.set("n", "<leader>wx", ":close<CR>") -- close current split window
 
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
--- deprecated
--- vim.keymap.set("n", "m", vim.diagnostic.goto_next, { desc = "Go to next [D]iagnostic message" })
--- vim.keymap.set("n", "M", vim.diagnostic.goto_prev, { desc = "Go to previous [D]iagnostic message" })
 vim.keymap.set("n", "<leader>m", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 
 -- navigate windows
@@ -771,7 +767,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
 
     vim.keymap.set("n", "m", vim.diagnostic.goto_next, opts)
-    vim.keymap.set("n", "m", vim.diagnostic.goto_prev, opts)
+    vim.keymap.set("n", "M", vim.diagnostic.goto_prev, opts)
 
     vim.keymap.set("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts)
     vim.keymap.set("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, opts)
