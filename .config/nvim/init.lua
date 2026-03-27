@@ -251,6 +251,11 @@ require("lazy").setup({
         cmake = { "cmake_format" },
         sh = { "shfmt" },
         json = { "jq" },
+        javascript = { "biome-organize-imports", "biome" },
+        jsx = { "biome-organize-imports", "biome" },
+        tsx = { "biome-organize-imports", "biome" },
+        typescript = { "biome-organize-imports", "biome" },
+        tex = { "tex-fmt" },
       },
     },
   },
@@ -709,6 +714,27 @@ vim.lsp.config("lua_ls", {
   },
 })
 
+vim.lsp.config("biome", {
+  cmd = { "biome", "lsp-proxy" },
+  filetypes = {
+    "astro",
+    "css",
+    "graphql",
+    "javascript",
+    "javascriptreact",
+    "json",
+    "jsonc",
+    "svelte",
+    "typescript",
+    "typescript.tsx",
+    "typescriptreact",
+    "vue",
+  },
+
+  capabilities = capabilities,
+  workspace_required = true,
+})
+
 vim.lsp.config("basedpyright", {
   cmd = { "basedpyright-langserver", "--stdio" },
   filetypes = { "python" },
@@ -738,6 +764,29 @@ vim.lsp.config("nil", {
   capabilities = capabilities,
   filetypes = { "nix" },
   root_markers = { "flake.nix", ".git" },
+})
+
+vim.lsp.config("texlab", {
+  filetypes = { "tex", "plaintex", "bib" },
+  cmd = { "texlab" },
+  root_markers = { ".git", "main.tex" },
+  settings = {
+    texlab = {
+      bibtexFormatter = "texlab",
+      build = {
+        onSave = false,
+        onType = false,
+      },
+      diagnosticDelay = 100,
+      formatterLineLength = 80,
+
+      forwardSearch = {
+        args = {},
+      },
+    },
+  },
+
+  single_file_support = true,
 })
 
 -- Neovim 0.11+ completion API
@@ -784,4 +833,4 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
-vim.lsp.enable({ "lua_ls", "basedpyright", "ruff", "nil" })
+vim.lsp.enable({ "lua_ls", "basedpyright", "ruff", "nil", "biome", "texlab" })
