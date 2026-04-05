@@ -759,6 +759,12 @@ vim.lsp.config("ruff", {
   root_markers = { "pyproject.toml", "ruff.toml", ".ruff.toml", ".git" },
 })
 
+vim.lsp.config("taplo", {
+  cmd = { "taplo", "lsp", "stdio" },
+  filetypes = { "toml" },
+  root_markers = { ".taplo.toml", "taplo.toml", ".git" },
+})
+
 vim.lsp.config("nil", {
   cmd = { "nil" },
   capabilities = capabilities,
@@ -833,4 +839,4 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
-vim.lsp.enable({ "lua_ls", "basedpyright", "ruff", "nil", "biome", "texlab" })
+vim.lsp.enable({ "lua_ls", "basedpyright", "ruff", "nil", "biome", "texlab", "taplo" })
