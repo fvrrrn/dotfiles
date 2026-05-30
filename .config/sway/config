@@ -259,6 +259,12 @@ input * {
     xkb_options grp:toggle
 }
 
+input type:touchpad {
+    tap disabled                                                                                                                                                 
+    click_method clickfinger
+    middle_emulation disabled                                                                                                                                   
+} 
+
 seat seat0 hide_cursor 3000
 
 include /etc/sway/config.d/*

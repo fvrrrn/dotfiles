@@ -23,6 +23,11 @@ require("lazy").setup({
     hererocks = false,
   },
   {
+    "chentoast/marks.nvim",
+    event = "VeryLazy",
+    opts = {},
+  },
+  {
     "nativerv/cyrillic.nvim",
     event = { "VeryLazy" },
     config = function()
@@ -274,7 +279,7 @@ require("lazy").setup({
         command = "hi Comment  gui=NONE |" .. "hi Constant gui=NONE",
       })
 
-      vim.api.nvim_command("colorscheme zenwritten")
+      vim.api.nvim_command("colorscheme zenbones")
       vim.o.background = "dark" -- or "dark" for light mode
     end,
   },
