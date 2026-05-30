@@ -1,0 +1,104 @@
+{
+  "nodes": {
+    "eden-flake": {
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1775170539,
+        "narHash": "sha256-7cu3YWhrC/gWIn+6xpJFfSDoxiRNf1GOt1dhfK6mgK4=",
+        "owner": "ardishko",
+        "repo": "eden-flake",
+        "rev": "4d5a8c2e5199a230507581a43e17782f8b682c19",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ardishko",
+        "repo": "eden-flake",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1772198003,
+        "narHash": "sha256-I45esRSssFtJ8p/gLHUZ1OUaaTaVLluNkABkk6arQwE=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "dd9b079222d43e1943b6ebd802f04fd959dc8e61",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1774386573,
+        "narHash": "sha256-4hAV26quOxdC6iyG7kYaZcM3VOskcPUrdCQd/nx8obc=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "46db2e09e1d3f113a13c0d7b81e2f221c63b8ce9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "eden-flake": "eden-flake",
+        "nixpkgs": "nixpkgs_2",
+        "sops-nix": "sops-nix",
+        "zen-browser": "zen-browser"
+      }
+    },
+    "sops-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1776119890,
+        "narHash": "sha256-Zm6bxLNnEOYuS/SzrAGsYuXSwk3cbkRQZY0fJnk8a5M=",
+        "owner": "Mic92",
+        "repo": "sops-nix",
+        "rev": "d4971dd58c6627bfee52a1ad4237637c0a2fb0cd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Mic92",
+        "repo": "sops-nix",
+        "type": "github"
+      }
+    },
+    "zen-browser": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1774672774,
+        "narHash": "sha256-YRCl611V07lCKRURJXFKEfje9Dc05DtE7cuIqGq/25A=",
+        "owner": "youwen5",
+        "repo": "zen-browser-flake",
+        "rev": "983f4799fc91a7341d12d657cc10c4ec771b4e1a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "youwen5",
+        "repo": "zen-browser-flake",
+        "type": "github"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}

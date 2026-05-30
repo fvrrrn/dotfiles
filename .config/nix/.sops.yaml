@@ -1,0 +1,17 @@
+keys:
+  - &host_t480 age14vtuqw7az3ffd99s0pv6sj29uvh4qfz8y8t97emez6xtwfela9dqplutjm
+  - &host_pc age12r04tevzlt02cwp2qfwc65q7p7z2fshhk2uy9uvm3a03xsdv4a0sk50llx
+
+creation_rules:
+  - path_regex: secrets/common\.yaml$
+    key_groups:
+      - age:
+          - *host_t480
+          - *host_pc
+
+  # Secrets for pc only (autossh tunneller key)
+  - path_regex: secrets/pc\.yaml$
+    key_groups:
+      - age:
+          []
+          # - *host_pc  # uncomment after adding host_pc key above
