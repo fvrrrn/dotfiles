@@ -50,5 +50,5 @@ zle -N zle-line-init
 echo -ne '\e[6 q' # Use beam shape cursor on startup.
 preexec() { echo -ne '\e[6 q' ;} # Use beam shape cursor for each new prompt.
 
-# System clipboard integration
 source "$XDG_DATA_HOME/zsh/plugins/zsh-system-clipboard/zsh-system-clipboard.zsh"
+source "$XDG_DATA_HOME/zsh/plugins/zsh-vi-mode/zsh-vi-mode.zsh"
