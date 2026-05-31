@@ -2,6 +2,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 vim.pack.add({
+  { src = "https://github.com/nvim-treesitter/nvim-treesitter", branch = "main" },
   "https://github.com/ibhagwan/fzf-lua",
   "https://github.com/stevearc/oil.nvim",
   { src = "https://github.com/smoka7/hop.nvim", version = vim.version.range("*") },
@@ -257,7 +258,7 @@ vim.opt.backspace = "indent,eol,start"
 vim.opt.autochdir = false
 vim.opt.iskeyword:append("-")
 vim.opt.path:append("**")
-vim.opt.selection = "exclusive"
+vim.opt.selection = "inclusive"
 vim.opt.mouse = "a"
 vim.opt.clipboard = "unnamedplus"
 vim.opt.modifiable = true
@@ -306,7 +307,7 @@ vim.keymap.set("n", "<C-l>", "<C-w>l")
 
 -- move line
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-vim.keymap.set("v", "K", ":m '>-2<CR>gv=gv")
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
 vim.cmd("set keymap=russian-jcukenwin")
 vim.cmd("set iminsert=0")
@@ -416,12 +417,6 @@ vim.lsp.config("texlab", {
   single_file_support = true,
 })
 
-vim.api.nvim_create_autocmd("FileType", {
-  callback = function(ev)
-    pcall(vim.treesitter.start, ev.buf)
-  end,
-})
-
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("UserLspConfig", {}),
   callback = function(ev)
@@ -449,3 +444,33 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 vim.lsp.enable({ "lua_ls", "basedpyright", "ruff", "nil", "biome", "texlab", "taplo" })
+
+-- TREESITTER
+require("nvim-treesitter").setup()
+
+vim.api.nvim_create_autocmd("FileType", { -- enable treesitter highlighting and indents
+  callback = function(args)
+    local filetype = args.match
+    local lang = vim.treesitter.language.get_lang(filetype)
+    if vim.treesitter.language.add(lang) then
+      vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+      vim.treesitter.start()
+    end
+  end,
+})
+
+vim.keymap.set("v", "v", function()
+  if vim.treesitter.get_parser(nil, nil, { error = false }) then
+    require("vim.treesitter._select").select_parent(vim.v.count1)
+  else
+    vim.lsp.buf.selection_range(vim.v.count1)
+  end
+end, { desc = "Select parent treesitter node or outer incremental lsp selections" })
+
+vim.keymap.set("v", "V", function()
+  if vim.treesitter.get_parser(nil, nil, { error = false }) then
+    require("vim.treesitter._select").select_child(vim.v.count1)
+  else
+    vim.lsp.buf.selection_range(-vim.v.count1)
+  end
+end, { desc = "Select child treesitter node or inner incremental lsp selections" })
