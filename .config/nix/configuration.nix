@@ -9,6 +9,10 @@
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
 
+  programs.nix-ld = {
+    enable = true;
+  };
+
   nix = {
     package = pkgs.nixVersions.latest;
     settings = {
@@ -155,6 +159,7 @@
     zathura # pdf reader
 
     python3
+    uv
     ungoogled-chromium
     pavucontrol
     fastfetch
