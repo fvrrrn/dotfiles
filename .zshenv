@@ -5,9 +5,7 @@ export XDG_STATE_HOME="$HOME/.local/state"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export CLAUDE_CONFIG_DIR="$XDG_CONFIG_HOME/claude"
 
-# XDG-compliant app overrides
 export GNUPGHOME="$XDG_DATA_HOME/gnupg"
-export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
 export BUN_INSTALL="$XDG_DATA_HOME/bun"
 export NPM_CONFIG_CACHE="$XDG_CACHE_HOME/npm"
 export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
