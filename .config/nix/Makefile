@@ -5,13 +5,13 @@ ifndef HOSTNAME
 endif
 
 switch:
-	nixos-rebuild switch --sudo --flake .#${HOSTNAME} -L
+	sudo nixos-rebuild switch --flake .#${HOSTNAME} -L
 
 boot:
-	nixos-rebuild boot --sudo --flake .#${HOSTNAME} -L
+	sudo nixos-rebuild boot --flake .#${HOSTNAME} -L
 
 test:
-	nixos-rebuild test --sudo --flake .#${HOSTNAME} -L
+	sudo nixos-rebuild test --flake .#${HOSTNAME} -L
 
 update:
 	nix flake update

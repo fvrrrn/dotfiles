@@ -134,6 +134,11 @@
   sops.age.keyFile = "/var/lib/sops-nix/key.txt";
   sops.age.generateKey = true;
 
+  services.journald.extraConfig = ''
+    SystemMaxUse=500M
+    MaxRetentionSec=30day
+  '';
+
   systemd.tmpfiles.rules = [
     "d /home/tunneller/.ssh 0700 tunneller tunneller -"
   ];
@@ -143,7 +148,6 @@
     autossh
     sshfs
     inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
-    inputs.eden-flake.packages.${pkgs.stdenv.hostPlatform.system}.eden
     lazygit
     bluetuith
 
@@ -208,7 +212,6 @@
         sha256 = "02fzc7js802iydf1rkrxarn34f15nmqnrg8h6z0jv1y5y46rsk6v";
       };
     }))
-    code-cursor
     obsidian
 
     remmina
@@ -240,7 +243,6 @@
 
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
-  hardware.xpadneo.enable = true;
   hardware.steam-hardware.enable = true;
 
   networking.firewall.enable = true;

@@ -33,6 +33,7 @@
           ./modules/sshd.nix
           ./modules/syncthing.nix
           ./modules/llama.nix
+          ./modules/eden.nix
         ];
       };
       t480 = nixpkgs.lib.nixosSystem {
