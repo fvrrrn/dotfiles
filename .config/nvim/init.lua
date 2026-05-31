@@ -2,7 +2,6 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 vim.pack.add({
-  "https://github.com/chentoast/marks.nvim",
   "https://github.com/ibhagwan/fzf-lua",
   "https://github.com/stevearc/oil.nvim",
   { src = "https://github.com/smoka7/hop.nvim", version = vim.version.range("*") },
@@ -13,9 +12,6 @@ vim.pack.add({
   "https://github.com/hkupty/iron.nvim",
   { src = "https://github.com/saghen/blink.cmp", version = vim.version.range("*") },
 })
-
--- MARKS
-require("marks").setup({})
 
 -- NAVIGATION/FZF-LUA
 local fzf = require("fzf-lua")
