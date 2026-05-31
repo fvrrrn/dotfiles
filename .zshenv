@@ -3,3 +3,15 @@ export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_STATE_HOME="$HOME/.local/state"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+export CLAUDE_CONFIG_DIR="$XDG_CONFIG_HOME/claude"
+
+# XDG-compliant app overrides
+export GNUPGHOME="$XDG_DATA_HOME/gnupg"
+export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
+export BUN_INSTALL="$XDG_DATA_HOME/bun"
+export NPM_CONFIG_CACHE="$XDG_CACHE_HOME/npm"
+export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
+export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
+export JUPYTER_DATA_DIR="$XDG_DATA_HOME/jupyter"
+export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/startup.py"
+export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"

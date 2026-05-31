@@ -12,19 +12,20 @@ setopt extended_history
 source <(fzf --zsh)
 
 alias dtf='git --git-dir=$HOME/.config/dots.git --work-tree=$HOME'
+alias dtflg='lazygit --git-dir=$HOME/.config/dots.git --work-tree=$HOME'
+compdef dtf=git
 
 setopt autocd
 
-# Basic auto/tab complete:
+# Completion
 zmodload zsh/complist
-autoload -U compinit && compinit -d "$XDG_CACHE_HOME/zsh/zcompdump"
 autoload -U colors && colors
-zstyle ':completion:*' menu select
-compinit -d "$XDG_CACHE_HOME/zsh/zcompdump"
+autoload -U compinit && compinit -d "$XDG_CACHE_HOME/zsh/zcompdump"
 _comp_options+=(globdots)
 
 # fzf-tab (must load after compinit)
 source "$XDG_DATA_HOME/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh"
+zstyle ':fzf-tab:*' query-string prefix input first
 
 # vi mode
 bindkey -v

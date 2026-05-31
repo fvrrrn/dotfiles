@@ -1,0 +1,5 @@
+[mgr]
+linemode = "size"
+
+[preview]
+image_protocol = "sixel"
