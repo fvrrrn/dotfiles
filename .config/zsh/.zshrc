@@ -9,8 +9,6 @@ setopt sharehistory
 setopt histignorealldups
 setopt extended_history
 
-source <(fzf --zsh)
-
 alias dtf='git --git-dir=$HOME/.config/dots.git --work-tree=$HOME'
 alias dtflg='lazygit --git-dir=$HOME/.config/dots.git --work-tree=$HOME'
 compdef dtf=git
@@ -22,6 +20,7 @@ zmodload zsh/complist
 autoload -U colors && colors
 autoload -U compinit && compinit -d "$XDG_CACHE_HOME/zsh/zcompdump"
 _comp_options+=(globdots)
+
 
 # fzf-tab (must load after compinit)
 source "$XDG_DATA_HOME/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh"
@@ -50,5 +49,10 @@ zle -N zle-line-init
 echo -ne '\e[6 q' # Use beam shape cursor on startup.
 preexec() { echo -ne '\e[6 q' ;} # Use beam shape cursor for each new prompt.
 
+
 source "$XDG_DATA_HOME/zsh/plugins/zsh-system-clipboard/zsh-system-clipboard.zsh"
 source "$XDG_DATA_HOME/zsh/plugins/zsh-vi-mode/zsh-vi-mode.zsh"
+
+zvm_after_init() {
+  source <(fzf --zsh)
+}
