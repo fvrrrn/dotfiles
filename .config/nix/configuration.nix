@@ -77,7 +77,6 @@
   # Enable the gnome-keyring secrets vault.
   # Will be exposed through DBus to programs willing to store secrets.
   services.gnome.gnome-keyring.enable = true;
-  services.dbus.packages = [pkgs.networkmanager];
 
   # enable Sway window manager
   programs.sway = {
@@ -234,8 +233,6 @@
   programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
 
-  programs.amnezia-vpn.enable = true;
-
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -249,13 +246,6 @@
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
   hardware.steam-hardware.enable = true;
-
-  networking.firewall.enable = true;
-  networking.firewall.allowedTCPPorts = [22]; # Allow SSH only
-  networking.firewall.allowedUDPPorts = []; # No UDP services exposed
-  networking.hostName = hostname; # Define your hostname.
-
-  networking.networkmanager.enable = true;
 
   security.sudo.extraRules = [
     {

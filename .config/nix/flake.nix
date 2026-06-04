@@ -28,6 +28,7 @@
           inputs.sops-nix.nixosModules.sops
           ./hardware/pc/hardware-configuration.nix
           ./configuration.nix
+          ./modules/network.nix
           ./modules/nvidia.nix
           ./modules/sing-box.nix
           ./modules/sshd.nix
@@ -46,6 +47,7 @@
           inputs.sops-nix.nixosModules.sops
           ./hardware/t480/hardware-configuration.nix
           ./configuration.nix
+          ./modules/network.nix
           ./modules/sing-box.nix
           ./modules/syncthing.nix
           ./modules/steam.nix
