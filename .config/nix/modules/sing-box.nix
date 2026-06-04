@@ -20,11 +20,22 @@
         servers = [
           {
             tag = "local-dns";
-            type = "udp";
-            server = "127.0.0.1";
-            server_port = 53;
+            type = "local";
+          }
+          {
+            tag = "doh-dns";
+            type = "https";
+            server = "8.8.8.8";
+            detour = "vless-out";
           }
         ];
+        rules = [
+          {
+            rule_set = ["refilter_domains"];
+            server = "doh-dns";
+          }
+        ];
+        final = "local-dns";
       };
       inbounds = [
         {

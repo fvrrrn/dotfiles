@@ -255,48 +255,7 @@
   networking.firewall.allowedUDPPorts = []; # No UDP services exposed
   networking.hostName = hostname; # Define your hostname.
 
-  networking = {
-    # Point DNS queries to the local dnscrypt-proxy service
-    nameservers = ["127.0.0.1" "::1"];
-
-    # Prevent NetworkManager from managing resolv.conf
-    networkmanager = {
-      enable = true;
-      dns = "systemd-resolved";
-    };
-
-    # If using dhcpcd instead of NetworkManager:
-    # dhcpcd.extraConfig = "nohook resolv.conf";
-  };
-
-  # Disable systemd-resolved (it conflicts)
-
-  networking.resolvconf.dnsExtensionMechanism = false;
-  services.resolved.enable = true;
-
-  # Enable dnscrypt-proxy
-  services.dnscrypt-proxy = {
-    enable = true;
-    settings = {
-      ipv6_servers = true;
-      server_names = ["google" "cloudflare" "quad9-doh"];
-      listen_addresses = ["127.0.0.1:53" "[::1]:53"];
-      require_dnssec = true;
-      # only use DoH servers
-      doh_servers = true;
-
-      # Add this to test if dnscrypt-proxy is actually used to resolve DNS requests
-      query_log.file = "/var/log/dnscrypt-proxy/query.log";
-      sources.public-resolvers = {
-        urls = [
-          "https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md"
-          "https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md"
-        ];
-        cache_file = "/var/lib/dnscrypt-proxy/public-resolvers.md";
-        minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
-      };
-    };
-  };
+  networking.networkmanager.enable = true;
 
   security.sudo.extraRules = [
     {
