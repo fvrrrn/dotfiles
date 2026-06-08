@@ -50,7 +50,7 @@ echo -ne '\e[6 q' # Use beam shape cursor on startup.
 preexec() { echo -ne '\e[6 q' ;} # Use beam shape cursor for each new prompt.
 
 
-source "$XDG_DATA_HOME/zsh/plugins/zsh-system-clipboard/zsh-system-clipboard.zsh"
+ZVM_SYSTEM_CLIPBOARD_ENABLED=true
 source "$XDG_DATA_HOME/zsh/plugins/zsh-vi-mode/zsh-vi-mode.zsh"
 
 zvm_after_init() {
