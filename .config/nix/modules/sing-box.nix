@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   pkgs,
   ...
 }: {
@@ -7,6 +8,8 @@
   sops.secrets.singbox_public_key = {sopsFile = ../secrets/common.yaml;};
   sops.secrets.singbox_short_id = {sopsFile = ../secrets/common.yaml;};
   sops.secrets.singbox_server = {sopsFile = ../secrets/common.yaml;};
+  sops.secrets.singbox_port = {sopsFile = ../secrets/common.yaml;};
+  sops.secrets.singbox_sni = {sopsFile = ../secrets/common.yaml;};
 
   services.sing-box = {
     enable = true;
@@ -59,15 +62,15 @@
           type = "vless";
           tag = "vless-out";
           server._secret = config.sops.secrets.singbox_server.path;
-          server_port = 443;
+          server_port = 0;
           uuid._secret = config.sops.secrets.singbox_uuid.path;
           flow = "xtls-rprx-vision";
           tls = {
             enabled = true;
-            server_name = "verkkokauppa.com";
+            server_name._secret = config.sops.secrets.singbox_sni.path;
             utls = {
               enabled = true;
-              fingerprint = "chrome";
+              fingerprint = "randomized";
             };
             reality = {
               enabled = true;
@@ -156,4 +159,12 @@
       };
     };
   };
+
+  systemd.services.sing-box.serviceConfig.ExecStartPre = lib.mkAfter [
+    (pkgs.writeShellScript "singbox-patch-port" ''
+      port=$(cat ${config.sops.secrets.singbox_port.path})
+      [[ -n "$port" ]] || { echo "singbox_port secret is empty"; exit 1; }
+      ${pkgs.gnused}/bin/sed -i "s/\"server_port\": 0/\"server_port\": $port/" /run/sing-box/config.json
+    '')
+  ];
 }
