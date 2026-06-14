@@ -1,6 +1,6 @@
 {
   pkgs,
-  hostname,
+  lib,
   inputs,
   ...
 }: {
@@ -64,25 +64,140 @@
     # media-session.enable = true;
   };
 
-  services.greetd = {
-    enable = true;
-    settings = {
-      default_session = {
-        command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd sway-nvidia";
-        user = "fvrn";
-      };
-    };
-  };
-
   # Enable the gnome-keyring secrets vault.
   # Will be exposed through DBus to programs willing to store secrets.
   services.gnome.gnome-keyring.enable = true;
+
+  services.desktopManager.gnome.enable = true;
+  services.displayManager.gdm.enable = true;
+
+  programs.dconf.profiles.user.databases = [{
+    locks = [
+      "/org/gnome/desktop/interface/cursor-theme"
+      "/org/gnome/desktop/interface/icon-theme"
+      "/org/gnome/desktop/interface/cursor-size"
+    ];
+    settings = {
+      # Enable PaperWM declaratively + recommended mutter settings
+      "org/gnome/shell" = {
+        "enabled-extensions"     = [ "paperwm@paperwm.github.com" ];
+        "disable-user-extensions" = false;
+      };
+      "org/gnome/mutter" = {
+        "edge-tiling"          = false;
+        "attach-modal-dialogs" = false;
+        "workspaces-only-on-primary" = false;
+      };
+      "org/gnome/desktop/interface" = {
+        "enable-animations" = false;
+        "cursor-theme"      = "Adwaita";
+        "icon-theme"        = "Adwaita";
+        "cursor-size"       = lib.gvariant.mkInt32 24;
+      };
+      "org/gnome/desktop/peripherals/keyboard" = {
+        "delay"           = lib.gvariant.mkUint32 200;
+        "repeat-interval" = lib.gvariant.mkUint32 20;
+      };
+      # PaperWM appearance and behaviour
+      "org/gnome/shell/extensions/paperwm" = let
+        u = lib.gvariant.mkUint32;
+      in {
+        "winprops"                       = [ ''{"wm_class":".*","preferredWidth":"100%"}'' ];
+        "window-gap"                     = u 0;
+        "horizontal-margin"              = u 0;
+        "vertical-margin"                = u 0;
+        "vertical-margin-bottom"         = u 0;
+        "selection-border-size"          = u 1;
+        "selection-border-radius-top"    = u 0;
+        "selection-border-radius-bottom" = u 0;
+      };
+      "org/gnome/shell/extensions/gesture-inhibitor" = {
+        "workspace-switch" = false;
+      };
+      # PaperWM: focus movement (h=left j=down k=up l=right)
+      "org/gnome/shell/extensions/paperwm/keybindings" = {
+        "switch-left"  = [ "<Super>h" ];
+        "switch-right" = [ "<Super>l" ];
+        "switch-down"  = [ "<Super>j" ];
+        "switch-up"    = [ "<Super>k" ];
+        "move-left"    = [ "<Super><Shift>h" ];
+        "move-right"   = [ "<Super><Shift>l" ];
+        "move-down"    = [ "<Super><Shift>j" ];
+        "move-up"      = [ "<Super><Shift>k" ];
+      };
+      # Workspace switching + window management
+      "org/gnome/desktop/wm/keybindings" = {
+        "switch-to-workspace-1"  = [ "<Super>1" ];
+        "switch-to-workspace-2"  = [ "<Super>2" ];
+        "switch-to-workspace-3"  = [ "<Super>3" ];
+        "switch-to-workspace-4"  = [ "<Super>4" ];
+        "switch-to-workspace-5"  = [ "<Super>5" ];
+        "switch-to-workspace-6"  = [ "<Super>6" ];
+        "switch-to-workspace-7"  = [ "<Super>7" ];
+        "switch-to-workspace-8"  = [ "<Super>8" ];
+        "switch-to-workspace-9"  = [ "<Super>9" ];
+        "switch-to-workspace-10" = [ "<Super>0" ];
+        "move-to-workspace-1"    = [ "<Super><Shift>1" ];
+        "move-to-workspace-2"    = [ "<Super><Shift>2" ];
+        "move-to-workspace-3"    = [ "<Super><Shift>3" ];
+        "move-to-workspace-4"    = [ "<Super><Shift>4" ];
+        "move-to-workspace-5"    = [ "<Super><Shift>5" ];
+        "move-to-workspace-6"    = [ "<Super><Shift>6" ];
+        "move-to-workspace-7"    = [ "<Super><Shift>7" ];
+        "move-to-workspace-8"    = [ "<Super><Shift>8" ];
+        "move-to-workspace-9"    = [ "<Super><Shift>9" ];
+        "move-to-workspace-10"   = [ "<Super><Shift>0" ];
+        "close"             = [ "<Super><Shift>q" ];
+        "toggle-fullscreen"  = [ "<Super>f" ];
+      };
+      # Disable default Super+number app-switching (conflicts with workspaces)
+      "org/gnome/shell/keybindings" = let
+        none = lib.gvariant.mkEmptyArray lib.gvariant.type.string;
+      in {
+        "toggle-overview"         = [ "<Super>d" ];
+        "switch-to-application-1" = none;
+        "switch-to-application-2" = none;
+        "switch-to-application-3" = none;
+        "switch-to-application-4" = none;
+        "switch-to-application-5" = none;
+        "switch-to-application-6" = none;
+        "switch-to-application-7" = none;
+        "switch-to-application-8" = none;
+        "switch-to-application-9" = none;
+      };
+      # Super+Return → foot terminal
+      "org/gnome/settings-daemon/plugins/media-keys" = {
+        "custom-keybindings" = [ "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/" ];
+      };
+      "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
+        "name"    = "Terminal";
+        "command" = "foot";
+        "binding" = "<Super>Return";
+      };
+    };
+  }];
 
   # enable Sway window manager
   programs.sway = {
     enable = true;
     wrapperFeatures.gtk = true;
   };
+
+  # expose sway-nvidia as a selectable session in GDM
+  services.displayManager.sessionPackages = [
+    (pkgs.runCommand "sway-nvidia-session" {
+      passthru.providedSessions = ["sway-nvidia"];
+    } ''
+      mkdir -p $out/share/wayland-sessions
+      cat > $out/share/wayland-sessions/sway-nvidia.desktop <<EOF
+      [Desktop Entry]
+      Name=Sway (NVIDIA)
+      Exec=/run/current-system/sw/bin/sway-nvidia
+      Type=Application
+      DesktopNames=sway
+      EOF
+    '')
+  ];
 
   services.interception-tools = {
     enable = true;
@@ -129,6 +244,8 @@
     # XDG_CURRENT_DESKTOP = "sway";
     # XDG_SESSION_DESKTOP = "sway";
     CLUTTER_BACKEND = "wayland";
+    XCURSOR_THEME = "Adwaita";
+    XCURSOR_SIZE = "24";
   };
 
   # List packages installed in system profile. To search, run:
@@ -148,6 +265,8 @@
 
   environment.systemPackages = with pkgs; [
     sops
+    ssh-to-age
+
     autossh
     sshfs
     inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
@@ -193,6 +312,7 @@
 
     tree
     fzf
+    gh
 
     # sway related
     # @see https://wiki.nixos.org/wiki/Sway
@@ -206,6 +326,10 @@
     (pkgs.writeShellScriptBin "sway-nvidia" ''
       exec ${pkgs.sway}/bin/sway --unsupported-gpu "$@"
     '')
+
+    # gnome extras
+    gnomeExtensions.paperwm
+    adwaita-icon-theme
 
     vscodium-fhs
     (vscode.overrideAttrs (old: rec {
