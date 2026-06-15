@@ -10,6 +10,7 @@
   sops.secrets.singbox_server = {sopsFile = ../secrets/common.yaml;};
   sops.secrets.singbox_port = {sopsFile = ../secrets/common.yaml;};
   sops.secrets.singbox_sni = {sopsFile = ../secrets/common.yaml;};
+  sops.secrets.singbox_hy2_password = {sopsFile = ../secrets/common.yaml;};
 
   services.sing-box = {
     enable = true;
@@ -29,7 +30,7 @@
             tag = "doh-dns";
             type = "https";
             server = "8.8.8.8";
-            detour = "vless-out";
+            detour = "hy2-out";
           }
         ];
         rules = [
@@ -57,6 +58,26 @@
         {
           type = "direct";
           tag = "direct-out";
+        }
+        {
+          type = "hysteria2";
+          tag = "hy2";
+          server._secret = config.sops.secrets.singbox_server.path;
+          server_port = 443;
+          password._secret = config.sops.secrets.singbox_hy2_password.path;
+          tls = {
+            enabled = true;
+            server_name._secret = config.sops.secrets.singbox_server.path;
+          };
+        }
+        {
+          type = "urltest";
+          tag = "hy2-out";
+          outbounds = ["hy2" "vless-out"];
+          url = "https://www.gstatic.com/generate_204";
+          interval = "3m";
+          tolerance = 50;
+          idle_timeout = "30m";
         }
         {
           type = "vless";
@@ -100,11 +121,11 @@
               "refilter_domains"
               "refilter_ipsum"
             ];
-            outbound = "vless-out";
+            outbound = "hy2-out";
           }
           {
             rule_set = "custom";
-            outbound = "vless-out";
+            outbound = "hy2-out";
           }
           {
             protocol = "dns";
@@ -144,6 +165,7 @@
                   "search.nixos.org"
                   "cdn2cdn.com"
                   "qdrant.tech"
+                  "happ.su"
                 ];
               }
             ];
