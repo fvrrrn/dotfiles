@@ -30,7 +30,6 @@
             tag = "doh-dns";
             type = "https";
             server = "8.8.8.8";
-            detour = "hy2-out";
           }
         ];
         rules = [
@@ -39,7 +38,7 @@
             server = "doh-dns";
           }
         ];
-        final = "local-dns";
+        final = "doh-dns";
       };
       inbounds = [
         {
