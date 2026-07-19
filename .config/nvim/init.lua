@@ -12,6 +12,7 @@ vim.pack.add({
   "https://github.com/mcchrish/zenbones.nvim",
   "https://github.com/hkupty/iron.nvim",
   { src = "https://github.com/saghen/blink.cmp", version = vim.version.range("*") },
+  "https://github.com/mg979/vim-visual-multi",
 })
 
 -- NAVIGATION/FZF-LUA

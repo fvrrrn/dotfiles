@@ -38,6 +38,10 @@
       "rev": "b91ee5a77a6a9605d9c1aaf4fda74b66082c8297",
       "src": "https://github.com/stevearc/oil.nvim"
     },
+    "vim-visual-multi": {
+      "rev": "a6975e7c1ee157615bbc80fc25e4392f71c344d4",
+      "src": "https://github.com/mg979/vim-visual-multi"
+    },
     "zenbones.nvim": {
       "rev": "239bdb9a09c8d38c752c43590d02f654ed0da2b0",
       "src": "https://github.com/mcchrish/zenbones.nvim"
