@@ -35,6 +35,8 @@
           ./modules/syncthing.nix
           ./modules/llama.nix
           ./modules/eden.nix
+          ./modules/ai.nix
+          ./modules/tmux.nix
         ];
       };
       t480 = nixpkgs.lib.nixosSystem {
@@ -52,6 +54,8 @@
           ./modules/syncthing.nix
           ./modules/steam.nix
           ./modules/sshd.nix
+          ./modules/ai.nix
+          ./modules/tmux.nix
         ];
       };
     };
