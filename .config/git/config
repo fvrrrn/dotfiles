@@ -21,7 +21,7 @@
 	prompt = true
 [mergetool "nvimdiff"]
 	cmd = "nvim -d \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c 'wincmd w' -c 'wincmd J'"
-[includeIf "gitdir:~/work/"]
-	path = ~/work/.config/git/config
+# [includeIf "gitdir:~/work/"]
+# 	path = ~/work/bchernyshov/.config/git/config
 [includeIf "gitdir:~/s21/"]
 	path = ~/s21/.gitconfig
