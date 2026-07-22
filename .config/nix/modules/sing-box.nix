@@ -29,7 +29,7 @@
           {
             tag = "doh-dns";
             type = "https";
-            server = "1.1.1.1";
+            server = "8.8.8.8";
           }
         ];
         rules = [
@@ -39,7 +39,6 @@
           }
         ];
         final = "doh-dns";
-        strategy = "prefer_ipv4";
       };
       inbounds = [
         {
@@ -47,15 +46,11 @@
           tag = "tun-in";
           interface_name = "tun0";
           mtu = 9000;
-          address = [
-            "172.19.0.1/30"
-            "fdfe:dcba:9876::1/126"
-          ];
+          address = ["172.19.0.1/30"];
           stack = "system";
           auto_route = true;
           strict_route = true;
           auto_redirect = true;
-          exclude_interface = ["enp0s31f6"];
         }
       ];
       outbounds = [
@@ -139,10 +134,6 @@
             ip_is_private = true;
             outbound = "direct-out";
           }
-          {
-            ip_version = 6;
-            outbound = "hy2-out";
-          }
         ];
         rule_set = [
           {
@@ -150,14 +141,14 @@
             type = "remote";
             format = "binary";
             url = "https://github.com/1andrevich/Re-filter-lists/releases/latest/download/ruleset-domain-refilter_domains.srs";
-            download_detour = "hy2-out";
+            download_detour = "direct-out";
           }
           {
             tag = "refilter_ipsum";
             type = "remote";
             format = "binary";
             url = "https://github.com/1andrevich/Re-filter-lists/releases/latest/download/ruleset-ip-refilter_ipsum.srs";
-            download_detour = "hy2-out";
+            download_detour = "direct-out";
           }
           {
             tag = "custom";
@@ -165,7 +156,6 @@
             rules = [
               {
                 domain = [
-                  "ntc.party"
                   "kino.pub"
                   "rezka.ag"
                   "rutracker.org"
