@@ -53,6 +53,7 @@
           ./modules/sing-box.nix
           ./modules/syncthing.nix
           ./modules/steam.nix
+          ./modules/way-displays.nix
           ./modules/sshd.nix
           ./modules/ai.nix
           ./modules/tmux.nix

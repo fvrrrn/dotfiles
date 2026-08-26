@@ -1,0 +1,52 @@
+# way-displays — automatic display management.
+# Watched live: edits apply immediately, no restart. Inspect with:
+#   way-displays -g
+# Reference: man 5 way-displays
+#
+# SYNTAX VERSION: this file uses schema 1.1.0, which is what way-displays
+# 1.15.0 (current in nixpkgs) ships. Upstream master has moved to schema
+# 2.0.0, which is a BREAKING change: DISABLED / MODE / SCALE / TRANSFORM
+# become maps keyed by the match string instead of lists of NAME_DESC
+# entries, and LAPTOP_DISPLAY_PREFIX becomes LAPTOP_LID_MONITOR. If a nixpkgs
+# bump to 2.x makes this config stop applying, that is why. The 2.x form of
+# the rule below would be:
+#
+#   DISABLED:
+#     '!^eDP-1$':
+#       IF:
+#       - PLUGGED:
+#         - '!^(HDMI|DP)-'
+
+ARRANGE: ROW
+ALIGN: TOP
+
+# Everything at scale 1, matching how this setup was already running.
+# Flip AUTO_SCALE to TRUE to scale by DPI instead.
+SCALING: TRUE
+AUTO_SCALE: FALSE
+
+# Internal panel off whenever any external connector is plugged.
+# '!' marks an extended POSIX regex. '^(HDMI|DP)-' matches connector names
+# like HDMI-A-2 and DP-1 but NOT eDP-1, because of the leading 'e'.
+DISABLED:
+  - NAME_DESC: '!^eDP-1$'
+    IF:
+      - PLUGGED:
+          - '!^(HDMI|DP)-'
+
+# The Acer advertises 3840x2160@30 modes over HDMI, which may win as
+# "preferred". Pin it to 1440p at the highest refresh available.
+MODE:
+  - NAME_DESC: 'Acer Technologies VG271U 0x3060B452'
+    WIDTH: 2560
+    HEIGHT: 1440
+
+# VRR is attempted by default; this display/compositor rejects it, which just
+# produces a warning and a retry on every event.
+VRR_OFF:
+  - 'VG271U'
+  - '0x14C3'
+
+CALLBACK_CMD: notify-send "way-displays ${CALLBACK_LEVEL}" "${CALLBACK_MSG}"
+
+LOG_THRESHOLD: INFO
