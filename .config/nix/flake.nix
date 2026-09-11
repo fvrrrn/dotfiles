@@ -28,6 +28,7 @@
           inputs.sops-nix.nixosModules.sops
           ./hardware/pc/hardware-configuration.nix
           ./configuration.nix
+          ./modules/secrets.nix
           ./modules/network.nix
           ./modules/nvidia.nix
           ./modules/sing-box.nix
@@ -49,6 +50,7 @@
           inputs.sops-nix.nixosModules.sops
           ./hardware/t480/hardware-configuration.nix
           ./configuration.nix
+          ./modules/secrets.nix
           ./modules/network.nix
           ./modules/sing-box.nix
           ./modules/syncthing.nix
@@ -57,6 +59,7 @@
           ./modules/sshd.nix
           ./modules/ai.nix
           ./modules/tmux.nix
+          ./modules/autossh-t480.nix
         ];
       };
     };

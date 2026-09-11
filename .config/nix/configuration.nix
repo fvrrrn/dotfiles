@@ -203,7 +203,7 @@
     btop
     bat
 
-    spotify
+    nicotine-plus
     telegram-desktop
 
     gnumake

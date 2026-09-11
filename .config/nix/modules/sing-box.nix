@@ -4,14 +4,6 @@
   pkgs,
   ...
 }: {
-  sops.secrets.singbox_uuid = {sopsFile = ../secrets/common.yaml;};
-  sops.secrets.singbox_public_key = {sopsFile = ../secrets/common.yaml;};
-  sops.secrets.singbox_short_id = {sopsFile = ../secrets/common.yaml;};
-  sops.secrets.singbox_server = {sopsFile = ../secrets/common.yaml;};
-  sops.secrets.singbox_port = {sopsFile = ../secrets/common.yaml;};
-  sops.secrets.singbox_sni = {sopsFile = ../secrets/common.yaml;};
-  sops.secrets.singbox_hy2_password = {sopsFile = ../secrets/common.yaml;};
-
   services.sing-box = {
     enable = true;
     package = pkgs.sing-box;
@@ -23,13 +15,15 @@
       dns = {
         servers = [
           {
-            tag = "local-dns";
-            type = "local";
-          }
-          {
             tag = "doh-dns";
             type = "https";
             server = "8.8.8.8";
+            detour = "vless-out";
+          }
+          {
+            tag = "doh-direct";
+            type = "https";
+            server = "77.88.8.8";
           }
         ];
         rules = [
@@ -38,7 +32,7 @@
             server = "doh-dns";
           }
         ];
-        final = "doh-dns";
+        final = "doh-direct";
       };
       inbounds = [
         {
@@ -66,7 +60,7 @@
           password._secret = config.sops.secrets.singbox_hy2_password.path;
           tls = {
             enabled = true;
-            server_name._secret = config.sops.secrets.singbox_server.path;
+            server_name._secret = config.sops.secrets.singbox_hy2_sni.path;
           };
         }
         {
@@ -98,16 +92,11 @@
               short_id._secret = config.sops.secrets.singbox_short_id.path;
             };
           };
-          domain_resolver = {
-            server = "local-dns";
-            rewrite_ttl = 60;
-            client_subnet = "1.1.1.1";
-          };
         }
       ];
       route = {
         default_domain_resolver = {
-          server = "local-dns";
+          server = "doh-direct";
           rewrite_ttl = 60;
         };
         rules = [
@@ -124,6 +113,10 @@
           }
           {
             rule_set = "custom";
+            outbound = "hy2-out";
+          }
+          {
+            ip_cidr = ["208.76.170.0/24"];
             outbound = "hy2-out";
           }
           {
@@ -165,6 +158,8 @@
                   "cdn2cdn.com"
                   "qdrant.tech"
                   "happ.su"
+                  "towardsdatascience.com"
+                  "slsknet.org"
                 ];
               }
             ];
