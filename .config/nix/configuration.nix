@@ -227,6 +227,16 @@
     fzf
     gh
 
+    # binary / file inspection
+    file # identify a file's type from its magic bytes
+    unixtools.xxd # hex dump, and -r to patch binaries back from hex
+    unixtools.hexdump # hexdump(1); complements coreutils' od
+    binwalk # find embedded files/filesystems inside firmware blobs
+    exiftool # read/strip metadata from media and documents
+    usbutils # lsusb: identify USB devices by vendor/product id
+    ffmpeg # full CLI; ffmpegthumbnailer above only does thumbnails
+    p7zip # 7z/rar/etc, for archives unzip cannot open
+
     # sway related
     # @see https://wiki.nixos.org/wiki/Sway
     grim # screenshot functionality
@@ -238,6 +248,13 @@
     mako # notification system developed by swaywm maintainer
     (pkgs.writeShellScriptBin "sway-nvidia" ''
       exec ${pkgs.sway}/bin/sway --unsupported-gpu "$@"
+    '')
+
+    # SUDO_ASKPASS helper: lets sudo prompt via wmenu when there is no TTY
+    # (e.g. commands run by Claude Code). $1 is the prompt text sudo passes in,
+    # so the dialog shows what is being escalated.
+    (pkgs.writeShellScriptBin "wmenu-askpass" ''
+      exec ${pkgs.wmenu}/bin/wmenu -P -p "''${1:-Password:}" < /dev/null
     '')
 
     # cursor/icon theme referenced by XCURSOR_THEME below
