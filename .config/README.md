@@ -66,6 +66,23 @@ Import: `scp pc:~/pass.gpg pass.gpg && gpg2 --import pass.gpg && rm pass.gpg`
 
 Clone store: `git clone ssh://pc/~/.password-store/.git ~/.password-store`
 
+### Pass for iOS (same-network sync via SSH)
+
+Git URL: `fvrn@192.168.1.11:~/.password-store`
+
+The repo is configured to accept pushes to the checked-out branch:
+```sh
+git -C ~/.password-store config receive.denyCurrentBranch updateInstead
+```
+
+SSH key for iOS is at `~/.ssh/pass-ios` (public key already in `~/.ssh/authorized_keys`).
+
+GPG subkey export for import into Pass for iOS:
+```sh
+gpg --export -a DC03683AFD35818A031B93B715166DFFB61E9F60! > ~/subkey-pub.gpg
+gpg --export-secret-subkeys -a DC03683AFD35818A031B93B715166DFFB61E9F60! > ~/subkey.gpg
+```
+
 ## SOPS secrets (inside ~/.config/nix/)
 
 Encrypt:
