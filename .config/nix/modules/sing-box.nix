@@ -155,6 +155,7 @@
                   "nixos.wiki"
                   "wiki.nixos.org"
                   "search.nixos.org"
+                  "cache.nixos.org"
                   "cdn2cdn.com"
                   "qdrant.tech"
                   "happ.su"
