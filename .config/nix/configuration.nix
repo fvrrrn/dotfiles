@@ -1,6 +1,5 @@
 {
   pkgs,
-  lib,
   inputs,
   ...
 }: {
@@ -43,7 +42,7 @@
   users.users.fvrn = {
     isNormalUser = true;
     description = "Boris Chernyshov";
-    extraGroups = ["networkmanager" "wheel"];
+    extraGroups = ["networkmanager" "wheel" "dialout"];
   };
 
   time.timeZone = "Europe/Moscow";
@@ -167,16 +166,20 @@
   sops.age.keyFile = "/var/lib/sops-nix/key.txt";
   sops.age.generateKey = true;
 
-  services.journald.extraConfig = ''
-    SystemMaxUse=500M
-    MaxRetentionSec=30day
-  '';
+  services.journald.settings.Journal = {
+    SystemMaxUse = "500M";
+    MaxRetentionSec = "30day";
+  };
 
   systemd.tmpfiles.rules = [
     "d /home/tunneller/.ssh 0700 tunneller tunneller -"
   ];
 
   environment.systemPackages = with pkgs; [
+    kitty
+    (pkgs.callPackage ./pkgs/dfzf.nix {})
+    (pkgs.callPackage ./pkgs/dfzf-search.nix {})
+
     sops
     ssh-to-age
 
@@ -213,7 +216,7 @@
     vlc
 
     lua-language-server
-    basedpyright # python type-checker
+    ty # python type-checker and language server (rust, fast)
     ruff # python linter and formatter
     nil # nix lsp
     alejandra # nix formatter
@@ -233,6 +236,7 @@
     unixtools.hexdump # hexdump(1); complements coreutils' od
     binwalk # find embedded files/filesystems inside firmware blobs
     exiftool # read/strip metadata from media and documents
+    poppler-utils # pdftotext/pdfinfo/pdftoppm: inspect and extract PDFs
     usbutils # lsusb: identify USB devices by vendor/product id
     ffmpeg # full CLI; ffmpegthumbnailer above only does thumbnails
     p7zip # 7z/rar/etc, for archives unzip cannot open

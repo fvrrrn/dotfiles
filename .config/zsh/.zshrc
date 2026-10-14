@@ -56,3 +56,20 @@ source "$XDG_DATA_HOME/zsh/plugins/zsh-vi-mode/zsh-vi-mode.zsh"
 zvm_after_init() {
   source <(fzf --zsh)
 }
+
+# dfzf: unique Kitty titles for window previews and scrollback matching.
+if [[ -n ${KITTY_WINDOW_ID-} ]]; then
+  autoload -Uz add-zsh-hook
+  _dfzf_kitty_title() {
+    local label="$1 /kitty-${KITTY_WINDOW_ID}-$$"
+    label=${label//$'\e'/}
+    label=${label//$'\a'/}
+    label=${label//$'\n'/ }
+    print -rn -- $'\e]2;'"$label"$'\a'
+    print -rn -- $'\e]1;'"$label"$'\a'
+  }
+  _dfzf_kitty_precmd() { _dfzf_kitty_title "${PWD/#$HOME/~}"; }
+  _dfzf_kitty_preexec() { _dfzf_kitty_title "$1"; }
+  add-zsh-hook precmd _dfzf_kitty_precmd
+  add-zsh-hook preexec _dfzf_kitty_preexec
+fi
