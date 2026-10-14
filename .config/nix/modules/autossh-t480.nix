@@ -25,6 +25,12 @@
       User = "tunnel";
       Restart = "always";
       RestartSec = "10";
+      # The -R target must be the LAN address, not localhost: Nicotine+ binds
+      # its listening socket to the interface address (192.168.1.11:2234), so
+      # forwarding to 127.0.0.1:2234 gets connection-refused and every inbound
+      # peer connection dies at this last hop. Note the VPS still accepts the
+      # TCP handshake on :2234 regardless, so port tests pass either way.
+      # Keep a DHCP reservation for 192.168.1.11 or this breaks on lease change.
       ExecStart = pkgs.writeShellScript "autossh-soulseek" ''
         exec ${pkgs.autossh}/bin/autossh \
           -M 0 \
@@ -36,7 +42,7 @@
           -o UserKnownHostsFile=/home/tunnel/.ssh/known_hosts \
           -i /home/tunnel/.ssh/id_ed25519 \
           -p 4455 \
-          -R 2234:localhost:2234 \
+          -R 2234:192.168.1.11:2234 \
           tunnel@$(cat ${config.sops.secrets.singbox_server.path})
       '';
     };
