@@ -11,6 +11,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     eden-flake.url = "github:ardishko/eden-flake";
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = {
     self,
