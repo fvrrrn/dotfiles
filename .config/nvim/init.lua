@@ -114,6 +114,7 @@ require("conform").setup({
     tsx = { "biome-organize-imports", "biome" },
     typescript = { "biome-organize-imports", "biome" },
     tex = { "tex-fmt" },
+    sql = { "sleek" },
   },
 })
 
@@ -144,6 +145,12 @@ iron.setup({
         format = common.bracketed_paste_python,
         block_dividers = { "# %%", "#%%" },
         env = { PYTHON_BASIC_REPL = "1" },
+      },
+      sql = {
+        command = function()
+          local db = vim.fn.input("SQLite DB (blank = :memory:): ", "", "file")
+          return { "sqlite3", "-interactive", db ~= "" and db or ":memory:" }
+        end,
       },
     },
     repl_filetype = function(_, ft)
@@ -378,6 +385,13 @@ vim.lsp.config("basedpyright", {
   },
 })
 
+vim.lsp.config("ty", {
+  cmd = { "ty", "server" },
+  filetypes = { "python" },
+  capabilities = capabilities,
+  root_markers = { "ty.toml", "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", ".git" },
+})
+
 vim.lsp.config("ruff", {
   cmd = { "ruff", "server" },
   filetypes = { "python" },
@@ -397,16 +411,36 @@ vim.lsp.config("nil", {
   root_markers = { "flake.nix", ".git" },
 })
 
+vim.lsp.config("sqls", {
+  cmd = { "sqls" },
+  filetypes = { "sql" },
+  root_markers = { ".sqls.yaml", ".git" },
+  capabilities = capabilities,
+})
+
 vim.lsp.config("texlab", {
   filetypes = { "tex", "plaintex", "bib" },
   cmd = { "texlab" },
-  root_markers = { ".git", "main.tex" },
+  root_markers = { ".git", "main.tex", ".texlabroot", "flake.nix" },
   settings = {
     texlab = {
       bibtexFormatter = "texlab",
       build = {
-        onSave = false,
+        -- xelatex, not the default pdflatex: fontspec/polyglossia documents
+        -- only compile under xetex. Separate outdir from the one tex-watch uses,
+        -- so two concurrent latexmk runs cannot clobber each other's aux files.
+        executable = "latexmk",
+        args = { "-pdfxe", "-synctex=1", "-interaction=nonstopmode", "-file-line-error", "-outdir=build/lsp", "%f" },
+        onSave = true,
         onType = false,
+      },
+      chktex = {
+        onEdit = true,
+        onOpenAndSave = true,
+        -- 1: "command terminated with space" -- fires on every macro used as \foo text
+        -- 6/13: italic-correction and intersentence-spacing advice, wrong for Cyrillic
+        -- 8/36: spacing around parentheses, wrong for \code{f()} and Russian punctuation
+        additionalArgs = { "-n1", "-n6", "-n8", "-n13", "-n36" },
       },
       diagnosticDelay = 100,
       formatterLineLength = 80,
@@ -448,7 +482,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
-vim.lsp.enable({ "lua_ls", "basedpyright", "ruff", "nil", "biome", "texlab", "taplo" })
+vim.lsp.enable({ "lua_ls", "ty", "ruff", "nil", "biome", "texlab", "taplo", "sqls" })
 
 -- TREESITTER
 require("nvim-treesitter").setup()
